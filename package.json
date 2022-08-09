@@ -1,0 +1,24 @@
+{
+  "name": "nba-react-app",
+  "version": "1.0.0",
+  "description": "A react application featuring National Basketball League information",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dowely/nba-react-app.git"
+  },
+  "keywords": [
+    "nba",
+    "react",
+    "api"
+  ],
+  "author": "Marcin Ogar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dowely/nba-react-app/issues"
+  },
+  "homepage": "https://github.com/dowely/nba-react-app#readme"
+}
