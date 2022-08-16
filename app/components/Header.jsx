@@ -1,16 +1,17 @@
 import React from "react"
-import NBALogo from "../assets/images/nba-logo.png"
+import { Link, NavLink } from "react-router-dom"
+import NBALogo from "../images/nba-logo.png"
 
 function Header() {
   return (
     <nav className="navbar navbar-expand-lg bg-info">
       <div className="container">
-        <a href="#" className="navbar-brand fs-2 fw-semibold text-dark fst-italic">
+        <Link to="/" className="navbar-brand fs-2 fw-semibold text-dark fst-italic">
           <img src={NBALogo} height="64" alt="NBA Logo" className="me-3 p-1 bg-white rounded-3" />
           NBApp
-        </a>
+        </Link>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -18,24 +19,24 @@ function Header() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
-          <ul class="navbar-nav fs-5">
-            <li class="nav-item px-2">
-              <a class="nav-link active" aria-current="page" href="#">
+        <div className="collapse navbar-collapse flex-grow-0" id="navbarNav">
+          <ul className="navbar-nav fs-5">
+            <li className="nav-item px-2">
+              <NavLink className="nav-link" to="/games">
                 Games
-              </a>
+              </NavLink>
             </li>
-            <li class="nav-item px-2">
-              <a class="nav-link" href="#">
+            <li className="nav-item px-2">
+              <NavLink className="nav-link" to="/standings">
                 Standings
-              </a>
+              </NavLink>
             </li>
-            <li class="nav-item px-2">
-              <a class="nav-link" href="#">
+            <li className="nav-item px-2">
+              <NavLink className="nav-link" to="/teams">
                 Teams
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
