@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 function Footer() {
   return (
     <>
-      <hr />
+      <hr className="mt-5" />
       <nav className="nav justify-content-center mb-1">
         <Link className="nav-link" to="/">
           Home

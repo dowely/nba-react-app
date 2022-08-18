@@ -1,11 +1,12 @@
 import React from "react"
 import { Link, NavLink } from "react-router-dom"
 import NBALogo from "../images/nba-logo.png"
+import Container from "./Container.jsx"
 
 function Header() {
   return (
     <nav className="navbar navbar-expand-lg bg-info">
-      <div className="container">
+      <Container>
         <Link to="/" className="navbar-brand fs-2 fw-semibold text-dark fst-italic">
           <img src={NBALogo} height="64" alt="NBA Logo" className="me-3 p-1 bg-white rounded-3" />
           NBApp
@@ -40,7 +41,7 @@ function Header() {
             </li>
           </ul>
         </div>
-      </div>
+      </Container>
     </nav>
   )
 }
