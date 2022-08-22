@@ -9,22 +9,23 @@ export const GamesDispatch = createContext()
 function GamesProvider(props) {
   const initialState = {
     params: {
-      seasons: [new Date().getFullYear()]
+      seasons: [new Date().getFullYear() - 1],
+      per_page: 100
     },
     games: [],
-    isLoading: false
+    isFetching: true
   }
 
   function reducer(draft, action) {
     switch (action.type) {
       case "fetchGames":
         draft.params = action.params
-        draft.isLoading = true
+        draft.isFetching = true
         break
 
       case "updateGames":
         draft.games = action.games
-        draft.isLoading = false
+        draft.isFetching = false
         break
     }
   }

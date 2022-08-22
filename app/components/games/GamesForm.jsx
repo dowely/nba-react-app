@@ -1,15 +1,16 @@
 import React, { useState, useContext } from "react"
-import { GamesDispatch } from "../../providers/GamesProvider.jsx"
+import { GamesDispatch, GamesState } from "../../providers/GamesProvider.jsx"
 
 function GamesForm() {
   const gamesDispatch = useContext(GamesDispatch)
+  const gamesState = useContext(GamesState)
 
-  const [season, setSeason] = useState(new Date().getFullYear())
+  const [season, setSeason] = useState(gamesState.params.seasons[0])
 
   function handleSubmit(e) {
     e.preventDefault()
 
-    const params = {}
+    const params = { per_page: 100 }
 
     if (season) params.seasons = [season]
 
@@ -18,7 +19,7 @@ function GamesForm() {
 
   return (
     <div className="card col-lg-9 mt-4">
-      <h3 className="card-header">Search</h3>
+      <h2 className="card-header">Search</h2>
       <form className="card-body" onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-3">
