@@ -7,7 +7,7 @@ module.exports = {
     publicPath: "/",
     path: path.resolve(__dirname, "app"),
     filename: "bundle.js",
-    assetModuleFilename: "[name][ext]"
+    assetModuleFilename: "logos/[name][ext]"
   },
   module: {
     rules: [

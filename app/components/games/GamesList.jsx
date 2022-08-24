@@ -52,6 +52,7 @@ function GamesList() {
     <div className="card mt-5">
       <div className="card-body">
         <h2 className="card-title">Results</h2>
+        <p className="lead">Below are listed games for applied filters</p>
         <hr />
         {gamesState.isFetching && (
           <div className="spinner-border text-primary" role="status">
@@ -70,7 +71,7 @@ function GamesList() {
               const games = dateCollection[1].games
 
               return (
-                <li className="list-group-item d-flex">
+                <li key={dateCollection[0]} className="list-group-item d-flex">
                   <div className="col-3">
                     <span className="lead">
                       {[
@@ -116,7 +117,9 @@ function GamesList() {
                     <hr />
                     <ul className="list-group list-group-flush">
                       {games.map(game => (
-                        <li className="list-group-item d-flex px-0">{game.id}</li>
+                        <li key={game.id} className="list-group-item d-flex px-0">
+                          {game.id}
+                        </li>
                       ))}
                     </ul>
                   </div>
