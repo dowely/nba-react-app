@@ -27,7 +27,9 @@ function AppProvider(props) {
         name: "Lakers",
         logo: "/logos/Lakers.gif"
       }
-    ]
+    ],
+    followedTeams: localStorage.getItem("followed_teams"),
+    flashMessages: []
   }
 
   function reducer(draft, action) {
@@ -36,6 +38,27 @@ function AppProvider(props) {
         draft.teams = action.teams.map(team => {
           return { ...team, logo: logos[team.name] }
         })
+        break
+
+      case "toggleFollow":
+        if (draft.followedTeams) {
+          const arr = JSON.parse(draft.followedTeams)
+          if (arr.includes(action.teamId) && arr.length === 1) {
+            draft.followedTeams = null
+          } else if (arr.includes(action.teamId)) {
+            arr.splice(arr.indexOf(action.teamId), 1)
+            draft.followedTeams = JSON.stringify(arr)
+          } else {
+            arr.push(action.teamId)
+            draft.followedTeams = JSON.stringify(arr)
+          }
+        } else {
+          draft.followedTeams = `[${action.teamId}]`
+        }
+        break
+
+      case "flashMessage":
+        draft.flashMessages.push(action.msg)
         break
     }
   }
@@ -47,6 +70,14 @@ function AppProvider(props) {
   useEffect(() => {
     if (teams) dispatch({ type: "loadTeams", teams })
   }, [teams])
+
+  useEffect(() => {
+    if (state.followedTeams) {
+      localStorage.setItem("followed_teams", state.followedTeams)
+    } else {
+      localStorage.removeItem("followed_teams")
+    }
+  }, [state.followedTeams])
 
   return (
     <AppState.Provider value={state}>
