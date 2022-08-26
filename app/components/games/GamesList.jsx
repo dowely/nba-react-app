@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { GamesState } from "../../providers/GamesProvider.jsx"
 
-function GamesList() {
+function GamesList({ noParams }) {
   const gamesState = useContext(GamesState)
 
   const initialState = {
@@ -54,13 +54,14 @@ function GamesList() {
         <h2 className="card-title">Results</h2>
         <p className="lead">Below are listed games for applied filters</p>
         <hr />
+        {noParams && <div className="card-text">Submit the form to view the relevant games</div>}
         {gamesState.isFetching && (
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         )}
 
-        {!gamesState.isFetching && !state.list && (
+        {!state.list && !noParams && !gamesState.isFetching && (
           <p className="card-text">There are no results for the selected parameters...</p>
         )}
 

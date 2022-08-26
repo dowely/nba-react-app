@@ -1,20 +1,54 @@
-import React, { useState, useContext } from "react"
-import { GamesDispatch, GamesState } from "../../providers/GamesProvider.jsx"
+import React, { useState, useEffect, useContext } from "react"
+import { GamesDispatch } from "../../providers/GamesProvider.jsx"
+import { AppDispatch } from "../../providers/AppProvider.jsx"
 
-function GamesForm() {
+function GamesForm({ params, setParams }) {
   const gamesDispatch = useContext(GamesDispatch)
-  const gamesState = useContext(GamesState)
+  const appDispatch = useContext(AppDispatch)
 
-  const [season, setSeason] = useState(gamesState.params.seasons[0])
+  const [seasons, setSeasons] = useState(params.getAll("seasons[]"))
+
+  useEffect(() => {
+    if (Array.from(params.keys()).length) {
+      const search = { per_page: 100 }
+
+      for (const [param, value] of params.entries()) {
+        if (search[param.slice(0, -2)]) {
+          search[param.slice(0, -2)].push(value)
+        } else if (param.endsWith("[]")) {
+          search[param.slice(0, -2)] = [value]
+        } else {
+          search[param] = value
+        }
+      }
+
+      console.log(search)
+
+      gamesDispatch({
+        type: "fetchGames",
+        params: search
+      })
+    }
+  }, [params])
 
   function handleSubmit(e) {
     e.preventDefault()
 
-    const params = { per_page: 100 }
+    const params = {}
 
-    if (season) params.seasons = [season]
+    if (seasons[0] !== undefined) params["seasons[]"] = seasons
 
-    gamesDispatch({ type: "fetchGames", params })
+    if (Object.keys(params).length) {
+      setParams(params)
+    } else {
+      appDispatch({
+        type: "flashMessage",
+        msg: {
+          text: "Please select at least one of these fields: Season, Start date, End date",
+          color: "danger"
+        }
+      })
+    }
   }
 
   return (
@@ -29,11 +63,18 @@ function GamesForm() {
             <select
               className="form-select"
               id="season"
-              onChange={e => setSeason(e.target.value)}
-              value={season}
+              onChange={e => setSeasons([e.target.value])}
+              value={seasons[0]}
             >
               {Array.from({ length: 30 }, (value, index) => {
-                value = new Date().getFullYear() - index
+                if (!index)
+                  return (
+                    <option value={undefined} key={index}>
+                      By dates
+                    </option>
+                  )
+
+                value = new Date().getFullYear() + 1 - index
 
                 return (
                   <option value={value} key={index}>

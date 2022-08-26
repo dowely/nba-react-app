@@ -8,12 +8,9 @@ export const GamesDispatch = createContext()
 
 function GamesProvider(props) {
   const initialState = {
-    params: {
-      seasons: [new Date().getFullYear() - 1],
-      per_page: 100
-    },
+    params: null,
     games: [],
-    isFetching: true
+    isFetching: false
   }
 
   function reducer(draft, action) {

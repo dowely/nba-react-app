@@ -7,7 +7,7 @@ function useGames(params) {
   const url = "https://www.balldontlie.io/api/v1/games"
 
   useEffect(() => {
-    ;(async function () {
+    async function fetchGames() {
       let results = []
 
       try {
@@ -37,7 +37,9 @@ function useGames(params) {
       } catch (error) {
         console.error(error)
       }
-    })()
+    }
+
+    if (params) fetchGames()
   }, [params])
 
   return games
