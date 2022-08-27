@@ -8,28 +8,74 @@ function GamesForm({ params, setParams }) {
 
   const [seasons, setSeasons] = useState(params.getAll("seasons[]"))
 
+  const [query, setQuery] = useState(parseSearchParams())
+
   useEffect(() => {
-    if (Array.from(params.keys()).length) {
-      const search = { per_page: 100 }
+    const newQuery = parseSearchParams()
 
-      for (const [param, value] of params.entries()) {
-        if (search[param.slice(0, -2)]) {
-          search[param.slice(0, -2)].push(value)
-        } else if (param.endsWith("[]")) {
-          search[param.slice(0, -2)] = [value]
-        } else {
-          search[param] = value
-        }
-      }
+    if (queriesAreDifferent(query, newQuery)) setQuery(newQuery)
+  }, [params])
 
-      console.log(search)
-
+  useEffect(() => {
+    if (Object.keys(query).length > 0) {
       gamesDispatch({
         type: "fetchGames",
-        params: search
+        params: {
+          ...query,
+          per_page: 100
+        }
       })
     }
-  }, [params])
+  }, [query])
+
+  function queriesAreDifferent(oldOne, newOne) {
+    for (const key in oldOne) {
+      if (!newOne.hasOwnProperty(key)) return true
+    }
+
+    for (const key in newOne) {
+      if (!oldOne.hasOwnProperty(key)) return true
+    }
+
+    for (const key in oldOne) {
+      if (key.endsWith("[]")) {
+        if (arraysAreDifferent(oldOne[key], newOne[key])) return true
+      } else {
+        if (oldOne[key] !== newOne[key]) true
+      }
+    }
+
+    return false
+  }
+
+  function arraysAreDifferent(arr1, arr2) {
+    if (arr1.length !== arr2.length) return true
+
+    for (const el of arr1) {
+      if (!arr2.includes(el)) return true
+    }
+
+    for (const el of arr2) {
+      if (!arr1.includes(el)) return true
+    }
+
+    return false
+  }
+
+  function parseSearchParams() {
+    return Array.from(params.entries())
+      .filter(([param]) => ["seasons[]", "team_ids[]", "start_date"].includes(param))
+      .reduce((prevEntry, [currParam, currValue]) => {
+        if (prevEntry[currParam]) {
+          prevEntry[currParam].push(currValue)
+        } else if (currParam.endsWith("[]")) {
+          prevEntry[currParam] = [currValue]
+        } else {
+          prevEntry[currParam] = currValue
+        }
+        return prevEntry
+      }, {})
+  }
 
   function handleSubmit(e) {
     e.preventDefault()

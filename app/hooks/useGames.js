@@ -31,7 +31,7 @@ function useGames(params) {
           })
         }
 
-        results.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        results.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
         setGames(results)
       } catch (error) {

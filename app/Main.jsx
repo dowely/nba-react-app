@@ -3,6 +3,13 @@ import ReactDOM from "react-dom/client"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "./styles/custom.css"
 
+import Axios from "axios"
+import qs from "qs"
+
+Axios.defaults.paramsSerializer = params => {
+  return qs.stringify(params, { arrayFormat: "repeat" })
+}
+
 import AppProvider from "./providers/AppProvider.jsx"
 
 //global components
