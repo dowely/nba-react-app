@@ -14,7 +14,11 @@ function Games() {
     <GamesProvider>
       <Page title="Games">
         <GamesForm params={searchParams} setParams={setSearchParams} />
-        <GamesList noParams={Boolean(!Array.from(searchParams.keys()).length)} />
+        <GamesList
+          noParams={Boolean(!Array.from(searchParams.keys()).length)}
+          params={searchParams}
+          setParams={setSearchParams}
+        />
       </Page>
     </GamesProvider>
   )

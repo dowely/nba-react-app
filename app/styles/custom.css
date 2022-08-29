@@ -4,6 +4,10 @@
   }
 }
 
+:root {
+  scroll-behavior: auto;
+}
+
 .active {
   font-weight: 500;
 }
