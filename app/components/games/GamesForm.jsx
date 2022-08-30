@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import { GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { AppDispatch } from "../../providers/AppProvider.jsx"
+import { foo } from "../../helpers.js"
 
 function GamesForm({ params, setParams }) {
+  const navigate = useNavigate()
+
   const gamesDispatch = useContext(GamesDispatch)
   const appDispatch = useContext(AppDispatch)
 
@@ -11,7 +15,9 @@ function GamesForm({ params, setParams }) {
   const [query, setQuery] = useState(parseSearchParams())
 
   useEffect(() => {
-    const newQuery = parseSearchParams()
+    const newQuery = parseSearchParams("foo")
+
+    foo()
 
     if (queriesAreDifferent(query, newQuery)) setQuery(newQuery)
   }, [params])
@@ -27,6 +33,22 @@ function GamesForm({ params, setParams }) {
       })
     }
   }, [query])
+
+  function parseSearchParams(foo) {
+    console.log(foo)
+    return Array.from(params.entries())
+      .filter(([param]) => ["seasons[]", "team_ids[]", "start_date"].includes(param))
+      .reduce((prevEntry, [currParam, currValue]) => {
+        if (prevEntry[currParam]) {
+          prevEntry[currParam].push(currValue)
+        } else if (currParam.endsWith("[]")) {
+          prevEntry[currParam] = [currValue]
+        } else {
+          prevEntry[currParam] = currValue
+        }
+        return prevEntry
+      }, {})
+  }
 
   function queriesAreDifferent(oldOne, newOne) {
     for (const key in oldOne) {
@@ -62,27 +84,12 @@ function GamesForm({ params, setParams }) {
     return false
   }
 
-  function parseSearchParams() {
-    return Array.from(params.entries())
-      .filter(([param]) => ["seasons[]", "team_ids[]", "start_date"].includes(param))
-      .reduce((prevEntry, [currParam, currValue]) => {
-        if (prevEntry[currParam]) {
-          prevEntry[currParam].push(currValue)
-        } else if (currParam.endsWith("[]")) {
-          prevEntry[currParam] = [currValue]
-        } else {
-          prevEntry[currParam] = currValue
-        }
-        return prevEntry
-      }, {})
-  }
-
   function handleSubmit(e) {
     e.preventDefault()
 
     const params = {}
 
-    if (seasons[0] !== undefined) params["seasons[]"] = seasons
+    if (seasons.length && seasons[0] !== "byDates") params["seasons[]"] = seasons
 
     if (Object.keys(params).length) {
       setParams(params)
@@ -109,13 +116,16 @@ function GamesForm({ params, setParams }) {
             <select
               className="form-select"
               id="season"
-              onChange={e => setSeasons([e.target.value])}
+              onChange={e => {
+                setSeasons([e.target.value])
+                console.log(seasons)
+              }}
               value={seasons[0]}
             >
               {Array.from({ length: 30 }, (value, index) => {
                 if (!index)
                   return (
-                    <option value={undefined} key={index}>
+                    <option value={"byDates"} key={index}>
                       By dates
                     </option>
                   )

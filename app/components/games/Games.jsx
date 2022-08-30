@@ -5,20 +5,16 @@ import GamesProvider from "../../providers/GamesProvider.jsx"
 //components
 import Page from "../Page.jsx"
 import GamesForm from "./GamesForm.jsx"
-import GamesList from "./GamesList.jsx"
+import GamesResults from "./GamesResults.jsx"
 
 function Games() {
   const [searchParams, setSearchParams] = useSearchParams()
-
+  console.log(searchParams)
   return (
     <GamesProvider>
       <Page title="Games">
         <GamesForm params={searchParams} setParams={setSearchParams} />
-        <GamesList
-          noParams={Boolean(!Array.from(searchParams.keys()).length)}
-          params={searchParams}
-          setParams={setSearchParams}
-        />
+        <GamesResults params={searchParams} setParams={setSearchParams} />
       </Page>
     </GamesProvider>
   )
