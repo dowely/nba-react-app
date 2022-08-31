@@ -9,7 +9,7 @@ import GamesResults from "./GamesResults.jsx"
 
 function Games() {
   const [searchParams, setSearchParams] = useSearchParams()
-  console.log(searchParams)
+
   return (
     <GamesProvider>
       <Page title="Games">

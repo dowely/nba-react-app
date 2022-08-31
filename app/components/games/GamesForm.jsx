@@ -1,23 +1,18 @@
 import React, { useState, useEffect, useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import { GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { AppDispatch } from "../../providers/AppProvider.jsx"
-import { foo } from "../../helpers.js"
+import { parseSearchParams } from "../../helpers.js"
 
 function GamesForm({ params, setParams }) {
-  const navigate = useNavigate()
-
   const gamesDispatch = useContext(GamesDispatch)
   const appDispatch = useContext(AppDispatch)
 
   const [seasons, setSeasons] = useState(params.getAll("seasons[]"))
 
-  const [query, setQuery] = useState(parseSearchParams())
+  const [query, setQuery] = useState(parseSearchParams(params))
 
   useEffect(() => {
-    const newQuery = parseSearchParams("foo")
-
-    foo()
+    const newQuery = parseSearchParams(params)
 
     if (queriesAreDifferent(query, newQuery)) setQuery(newQuery)
   }, [params])
@@ -33,22 +28,6 @@ function GamesForm({ params, setParams }) {
       })
     }
   }, [query])
-
-  function parseSearchParams(foo) {
-    console.log(foo)
-    return Array.from(params.entries())
-      .filter(([param]) => ["seasons[]", "team_ids[]", "start_date"].includes(param))
-      .reduce((prevEntry, [currParam, currValue]) => {
-        if (prevEntry[currParam]) {
-          prevEntry[currParam].push(currValue)
-        } else if (currParam.endsWith("[]")) {
-          prevEntry[currParam] = [currValue]
-        } else {
-          prevEntry[currParam] = currValue
-        }
-        return prevEntry
-      }, {})
-  }
 
   function queriesAreDifferent(oldOne, newOne) {
     for (const key in oldOne) {
@@ -118,7 +97,6 @@ function GamesForm({ params, setParams }) {
               id="season"
               onChange={e => {
                 setSeasons([e.target.value])
-                console.log(seasons)
               }}
               value={seasons[0]}
             >
