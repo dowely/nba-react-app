@@ -1,15 +1,18 @@
-import React, { createContext, useEffect } from "react"
+import React, { createContext, useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import useGames from "../hooks/useGames"
+import { AppDispatch } from "./AppProvider.jsx"
 
 export const GamesState = createContext()
 
 export const GamesDispatch = createContext()
 
 function GamesProvider(props) {
+  const appDispatch = useContext(AppDispatch)
+
   const initialState = {
     params: null,
-    games: [],
+    games: null,
     isFetching: false
   }
 
@@ -29,7 +32,7 @@ function GamesProvider(props) {
 
   const [state, dispatch] = useImmerReducer(reducer, initialState)
 
-  const games = useGames(state.params)
+  const games = useGames(state.params, appDispatch)
 
   useEffect(() => {
     if (games) dispatch({ type: "updateGames", games })

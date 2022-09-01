@@ -1,6 +1,12 @@
-import React from "react"
+import React, { forwardRef, useEffect } from "react"
 
-function GamesList({ list, params }) {
+const GamesList = forwardRef(({ list, params }, ref) => {
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" })
+    }
+  })
+
   return (
     <ul className="list-group list-group-flush">
       {Object.entries(list)
@@ -10,7 +16,11 @@ function GamesList({ list, params }) {
           const games = dateCollection[1].games
 
           return (
-            <li key={dateCollection[0]} className="list-group-item d-flex">
+            <li
+              ref={dateCollection[1].upNext ? ref : undefined}
+              key={dateCollection[0]}
+              className="list-group-item d-flex"
+            >
               <div className="col-3">
                 <span className="lead">
                   {["Sunday", "Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday"][
@@ -61,6 +71,6 @@ function GamesList({ list, params }) {
         })}
     </ul>
   )
-}
+})
 
 export default GamesList

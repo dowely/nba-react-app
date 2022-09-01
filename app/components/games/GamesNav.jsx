@@ -1,11 +1,27 @@
-import React, { useEffect } from "react"
+import React from "react"
 
 function GamesNav({ nav, pagination, params, setParams, dispatch }) {
   function handleNavigation(action) {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      left: 0
-    })
+    if (typeof action === "number") {
+      params.set("page", action)
+      setParams(params)
+    }
+
+    if (action === "prev" && nav.startsWith > 1) {
+      params.set("page", nav.startsWith - 1)
+      setParams(params)
+
+      dispatch({ type: "updateNav", value: "end" })
+    }
+
+    if (action === "next" && nav.endsWith < pagination.totalPages) {
+      params.set("page", nav.endsWith + 1)
+      setParams(params)
+
+      dispatch({ type: "updateNav", value: "start" })
+    }
+
+    dispatch({ type: "scrollToBottom" })
   }
 
   return (
@@ -14,6 +30,7 @@ function GamesNav({ nav, pagination, params, setParams, dispatch }) {
         <li
           role={nav.startsWith === 1 ? undefined : "button"}
           className={"page-item " + (nav.startsWith === 1 ? "disabled" : "")}
+          onClick={() => handleNavigation("prev")}
         >
           <span className="page-link">Previous</span>
         </li>
@@ -37,6 +54,7 @@ function GamesNav({ nav, pagination, params, setParams, dispatch }) {
         <li
           role={nav.endsWith === pagination.totalPages ? undefined : "button"}
           className={"page-item " + (nav.endsWith === pagination.totalPages ? "disabled" : "")}
+          onClick={() => handleNavigation("next")}
         >
           <span className="page-link">Next</span>
         </li>

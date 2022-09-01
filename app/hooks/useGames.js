@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Axios from "axios"
 
-function useGames(params) {
+function useGames(params, appDispatch) {
   const [games, setGames] = useState(null)
 
   const url = "https://www.balldontlie.io/api/v1/games"
@@ -36,6 +36,18 @@ function useGames(params) {
         setGames(results)
       } catch (error) {
         console.error(error)
+
+        const errors = {
+          429: "Too many requests. Try again later"
+        }
+
+        appDispatch({
+          type: "flashMessage",
+          msg: {
+            text: errors[error.response.status],
+            color: "danger"
+          }
+        })
       }
     }
 

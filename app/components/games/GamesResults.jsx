@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect, useContext, useRef } from "react"
 import { useImmerReducer } from "use-immer"
 import { GamesState } from "../../providers/GamesProvider.jsx"
 import { parseSearchParams } from "../../helpers.js"
@@ -11,17 +11,20 @@ function GamesResults({ params, setParams }) {
 
   const noParams = !Boolean(Array.from(params.keys()).length)
 
+  const elementToScrollTo = useRef(null)
+
   const initialState = {
     list: null,
     pagination: {
-      totalPages: 0,
+      totalPages: null,
       gamesPerPage: 100
     },
     nav: {
       maxSpan: 7,
       startsWith: null,
       endsWith: null
-    }
+    },
+    scrolledToBottom: 0
   }
 
   function reducer(draft, action) {
@@ -33,97 +36,75 @@ function GamesResults({ params, setParams }) {
           ? Object.values(draft.list).at(-1).onPage
           : 0
 
-        if (draft.pagination.totalPages === 0) {
-          draft.nav.startsWith = draft.nav.endsWith = 0
-        } else {
-          const pageParam = goToPage(draft)
-
-          draft.nav.startsWith = draft.nav.endsWith = pageParam
-
-          function reachTheLimits(side) {
-            const span = draft.nav.endsWith - draft.nav.startsWith + 1
-
-            if (span === draft.pagination.totalPages || span === draft.nav.maxSpan) return
-
-            if (side > 0 && draft.nav.endsWith < draft.pagination.totalPages) {
-              draft.nav.endsWith++
-            } else if (side < 0 && draft.nav.startsWith > 1) {
-              draft.nav.startsWith--
-            }
-
-            reachTheLimits(-side)
-          }
-
-          reachTheLimits(1)
-        }
-
-        return
-
-      case "updatePagination":
-        draft.pagination.totalPages = action.list ? Object.values(action.list).at(-1).onPage : 0
         return
 
       case "updateNav":
-        if (draft.pagination.totalPages === 0) {
-          draft.nav.startsWith = draft.nav.endsWith = null
-          return
-        } else if (action.value === "sync") {
-          const pageParam = parseInt(params.get("page"))
+        draft.nav.startsWith = draft.nav.endsWith = parseInt(params.get("page"))
 
-          draft.nav.startsWith = draft.nav.endsWith = pageParam
+        function reachTheLimits(side) {
+          const span = draft.nav.endsWith - draft.nav.startsWith + 1
 
-          function reachTheLimits(side) {
-            const span = draft.nav.endsWith - draft.nav.startsWith + 1
+          if (span === draft.pagination.totalPages || span === draft.nav.maxSpan) return
 
-            if (span === draft.pagination.totalPages || span === draft.nav.maxSpan) return
-
-            if (side > 0 && draft.nav.endsWith < draft.pagination.totalPages) {
-              draft.nav.endsWith++
-            } else if (side < 0 && draft.nav.startsWith > 1) {
-              draft.nav.startsWith--
-            }
-
-            reachTheLimits(-side)
+          if (side > 0 && draft.nav.endsWith < draft.pagination.totalPages) {
+            draft.nav.endsWith++
+          } else if (side < 0 && draft.nav.startsWith > 1) {
+            draft.nav.startsWith--
           }
 
-          reachTheLimits(1)
-
-          return
+          if (action.value === "start" && draft.nav.endsWith < draft.pagination.totalPages) {
+            reachTheLimits(1)
+          } else if (action.value === "end" && draft.nav.startsWith > 1) {
+            reachTheLimits(-1)
+          } else {
+            reachTheLimits(-side)
+          }
         }
+
+        reachTheLimits(action.value === "end" ? -1 : 1)
+
+        return
+
+      case "localize":
+        draft.list[action.date].upNext = true
+        return
+
+      case "scrollToBottom":
+        draft.scrolledToBottom++
+        return
     }
   }
 
   const [state, dispatch] = useImmerReducer(reducer, initialState)
 
   useEffect(() => {
-    dispatch({
-      type: "populateList",
-      games: gamesState.games
-    })
+    if (gamesState.games) {
+      dispatch({
+        type: "populateList",
+        games: gamesState.games
+      })
+    }
   }, [gamesState.games])
 
   useEffect(() => {
-    if (state.nav.startsWith === 0) {
-      console.log("foo")
+    if (typeof state.pagination.totalPages === "number") {
+      adjustParams()
+
+      if (state.pagination.totalPages > 0) {
+        dispatch({ type: "updateNav", value: "middle" })
+      }
     }
-  }, [state.nav.startsWith])
-  /*
-  useEffect(() => {
-    dispatch({
-      type: "updatePagination",
-      list: state.list
-    })
-  }, [state.list])
-
-  useEffect(() => {
-    if (state.pagination.totalPages > 0) goToPage()
-
-    dispatch({
-      type: "updateNav",
-      value: "sync"
-    })
   }, [state.pagination])
-*/
+
+  useEffect(() => {
+    if (state.scrolledToBottom) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        left: 0
+      })
+    }
+  }, [state.scrolledToBottom])
+
   function formatGames(rawGames, gamesPerPage) {
     if (!rawGames.length) return {}
 
@@ -148,29 +129,27 @@ function GamesResults({ params, setParams }) {
     return list
   }
 
-  function goToPage(draft) {
-    const pageParam = params.get("page")
-
+  function adjustParams() {
     const query = parseSearchParams(params)
 
-    if (pageParam && parseInt(pageParam) > draft.pagination.totalPages) {
-      //params.set("page", draft.pagination.totalPages)
-      query.page = draft.pagination.totalPages
-      //setParams(params)
+    if (state.pagination.totalPages === 0) {
       setParams(query)
+      return
+    }
+
+    const pageParam = params.get("page")
+
+    if (pageParam && parseInt(pageParam) > state.pagination.totalPages) {
+      query.page = state.pagination.totalPages
     } else if (pageParam && parseInt(pageParam) < 1) {
-      //params.set("page", 1)
       query.page = 1
-      //setParams(params)
-      setParams(query)
     } else if (pageParam) {
       query.page = parseInt(pageParam)
-      setParams(query)
     } else {
-      const timestamp = new Date().getTime()
+      const timestamp = new Date("2022-01-07").getTime()
 
-      const upNext = Object.entries(draft.list).reduce((prevValue, [currDate, currValue]) => {
-        if (new Date(currDate).getTime() > timestamp) {
+      const upNext = Object.entries(state.list).reduce((prevValue, currValue) => {
+        if (new Date(currValue[0]).getTime() > timestamp) {
           return currValue
         } else {
           return prevValue
@@ -178,16 +157,14 @@ function GamesResults({ params, setParams }) {
       }, null)
 
       if (upNext) {
-        upNext.scrolledTo = true
-        //params.set("page", upNext.onPage)
-        query.page = upNext.onPage
+        dispatch({ type: "localize", date: upNext[0] })
+
+        query.page = upNext[1].onPage
       } else {
-        //params.set("page", 1)
         query.page = 1
       }
-      setParams(query)
     }
-    return parseInt(query.page)
+    setParams(query)
   }
 
   return (
@@ -209,7 +186,7 @@ function GamesResults({ params, setParams }) {
               <p className="card-text">There are no results for the selected parameters...</p>
             )}
           {!gamesState.isFetching && Boolean(state.list && Object.keys(state.list).length) && (
-            <GamesList list={state.list} params={params} />
+            <GamesList list={state.list} params={params} ref={elementToScrollTo} />
           )}
         </div>
       </div>

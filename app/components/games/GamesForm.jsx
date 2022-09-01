@@ -70,6 +70,18 @@ function GamesForm({ params, setParams }) {
 
     if (seasons.length && seasons[0] !== "byDates") params["seasons[]"] = seasons
 
+    if (!queriesAreDifferent(query, params)) {
+      appDispatch({
+        type: "flashMessage",
+        msg: {
+          text: "Please modify filters first",
+          color: "warning"
+        }
+      })
+
+      return
+    }
+
     if (Object.keys(params).length) {
       setParams(params)
     } else {
