@@ -1,9 +1,15 @@
-import React, { forwardRef, useEffect } from "react"
+import React, { useRef, useEffect, useContext } from "react"
+import { Link } from "react-router-dom"
+import { AppState } from "../../providers/AppProvider.jsx"
 
-const GamesList = forwardRef(({ list, params }, ref) => {
+function GamesList({ list, params }) {
+  const elementToScrollTo = useRef(null)
+
+  const appState = useContext(AppState)
+
   useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" })
+    if (elementToScrollTo.current) {
+      elementToScrollTo.current.scrollIntoView({ behavior: "smooth" })
     }
   })
 
@@ -17,9 +23,9 @@ const GamesList = forwardRef(({ list, params }, ref) => {
 
           return (
             <li
-              ref={dateCollection[1].upNext ? ref : undefined}
+              ref={dateCollection[1].upNext ? elementToScrollTo : undefined}
               key={dateCollection[0]}
-              className="list-group-item d-flex"
+              className="list-group-item d-flex py-4"
             >
               <div className="col-3">
                 <span className="lead">
@@ -57,13 +63,71 @@ const GamesList = forwardRef(({ list, params }, ref) => {
                   <h5 className="col-6">Teams</h5>
                   <h5 className="col-3">Result</h5>
                 </div>
-                <hr />
+                <hr className="mb-0" />
                 <ul className="list-group list-group-flush">
-                  {games.map(game => (
-                    <li key={game.id} className="list-group-item d-flex px-0">
-                      {game.id}
-                    </li>
-                  ))}
+                  {games.map(game => {
+                    const homeTeam = appState.teams.find(team => team.id === game.home_team.id)
+
+                    const visitorTeam = appState.teams.find(
+                      team => team.id === game.visitor_team.id
+                    )
+
+                    return (
+                      <li key={game.id} className="list-group-item px-0 py-3 row d-flex">
+                        <div className="col-3">
+                          {game.status.toUpperCase() === "FINAL" && <span>FINAL</span>}
+                        </div>
+                        <div className="col-6 vstack gap-3">
+                          <div className="row align-items-center">
+                            <span className="col-auto">@</span>
+                            <div className="col-2 px-2">
+                              <img
+                                src={homeTeam.logo}
+                                alt={`A logo of ${homeTeam.full_name}`}
+                                className="img-fluid"
+                              />
+                            </div>
+                            <h6 className="col mb-0">
+                              <Link className="anchor" to={`/teams/${homeTeam.id}`}>
+                                {homeTeam.full_name}
+                              </Link>
+                            </h6>
+                          </div>
+                          <div className="row align-items-center">
+                            <span className="col-auto">vs</span>
+                            <div className="col-2 px-2">
+                              <img
+                                src={visitorTeam.logo}
+                                alt={`A logo of ${visitorTeam.full_name}`}
+                                className="img-fluid"
+                              />
+                            </div>
+                            <h6 className="col mb-0">
+                              <Link className="anchor" to={`/teams/${visitorTeam.id}`}>
+                                {visitorTeam.full_name}
+                              </Link>
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="col-3 d-flex flex-column justify-content-center gap-4">
+                          <span
+                            className={
+                              game.home_team_score > game.visitor_team_score ? "fw-bold" : undefined
+                            }
+                          >
+                            {game.home_team_score}
+                          </span>
+                          <span
+                            className={
+                              game.home_team_score < game.visitor_team_score ? "fw-bold" : undefined
+                            }
+                          >
+                            {game.visitor_team_score}
+                          </span>
+                        </div>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             </li>
@@ -71,6 +135,6 @@ const GamesList = forwardRef(({ list, params }, ref) => {
         })}
     </ul>
   )
-})
+}
 
 export default GamesList

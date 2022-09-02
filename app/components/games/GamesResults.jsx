@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react"
+import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { GamesState } from "../../providers/GamesProvider.jsx"
 import { parseSearchParams } from "../../helpers.js"
@@ -10,8 +10,6 @@ function GamesResults({ params, setParams }) {
   const gamesState = useContext(GamesState)
 
   const noParams = !Boolean(Array.from(params.keys()).length)
-
-  const elementToScrollTo = useRef(null)
 
   const initialState = {
     list: null,
@@ -87,14 +85,14 @@ function GamesResults({ params, setParams }) {
   }, [gamesState.games])
 
   useEffect(() => {
-    if (typeof state.pagination.totalPages === "number") {
+    if (state.list) {
       adjustParams()
 
       if (state.pagination.totalPages > 0) {
         dispatch({ type: "updateNav", value: "middle" })
       }
     }
-  }, [state.pagination])
+  }, [state.list])
 
   useEffect(() => {
     if (state.scrolledToBottom) {
@@ -145,25 +143,30 @@ function GamesResults({ params, setParams }) {
       query.page = 1
     } else if (pageParam) {
       query.page = parseInt(pageParam)
-    } else {
-      const timestamp = new Date("2022-01-07").getTime()
-
-      const upNext = Object.entries(state.list).reduce((prevValue, currValue) => {
-        if (new Date(currValue[0]).getTime() > timestamp) {
-          return currValue
-        } else {
-          return prevValue
-        }
-      }, null)
-
-      if (upNext) {
-        dispatch({ type: "localize", date: upNext[0] })
-
-        query.page = upNext[1].onPage
-      } else {
-        query.page = 1
-      }
     }
+
+    const timestamp = new Date("2022-01-07").getTime()
+
+    const upNext = Object.entries(state.list).reduce((prevValue, currValue) => {
+      if (new Date(currValue[0]).getTime() > timestamp) {
+        return currValue
+      } else {
+        return prevValue
+      }
+    }, null)
+
+    if (query.page && upNext) {
+      if (query.page === upNext[1].onPage) {
+        dispatch({ type: "localize", date: upNext[0] })
+      }
+    } else if (upNext) {
+      query.page = upNext[1].onPage
+
+      dispatch({ type: "localize", date: upNext[0] })
+    } else if (!query.page) {
+      query.page = 1
+    }
+
     setParams(query)
   }
 
@@ -186,7 +189,7 @@ function GamesResults({ params, setParams }) {
               <p className="card-text">There are no results for the selected parameters...</p>
             )}
           {!gamesState.isFetching && Boolean(state.list && Object.keys(state.list).length) && (
-            <GamesList list={state.list} params={params} ref={elementToScrollTo} />
+            <GamesList list={state.list} params={params} />
           )}
         </div>
       </div>
