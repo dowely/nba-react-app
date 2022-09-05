@@ -145,7 +145,7 @@ function GamesResults({ params, setParams }) {
       query.page = parseInt(pageParam)
     }
 
-    const timestamp = new Date("2022-01-07").getTime()
+    const timestamp = new Date().getTime()
 
     const upNext = Object.entries(state.list).reduce((prevValue, currValue) => {
       if (new Date(currValue[0]).getTime() > timestamp) {
@@ -177,20 +177,29 @@ function GamesResults({ params, setParams }) {
           <h2 className="card-title">Results</h2>
           <p className="lead">Below are listed games for the applied filters</p>
           <hr />
-          {noParams && <div className="card-text">Submit the form to view the relevant games</div>}
+          {!state.list && !gamesState.isFetching && !gamesState.error && (
+            <div className="card-text">Submit the form to view the relevant games</div>
+          )}
           {gamesState.isFetching && (
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           )}
+          {gamesState.error && <p className="card-text">{gamesState.error}</p>}
           {!gamesState.isFetching &&
-            !Boolean(state.list && Object.keys(state.list).length) &&
+            !gamesState.error &&
+            state.list &&
+            !Boolean(Object.keys(state.list).length) &&
             !noParams && (
-              <p className="card-text">There are no results for the selected parameters...</p>
+              <p className="card-text">
+                There are no results for the selected parameters. Please modify your search
+              </p>
             )}
-          {!gamesState.isFetching && Boolean(state.list && Object.keys(state.list).length) && (
-            <GamesList list={state.list} params={params} />
-          )}
+          {!gamesState.isFetching &&
+            !gamesState.error &&
+            Boolean(state.list && Object.keys(state.list).length) && (
+              <GamesList list={state.list} params={params} />
+            )}
         </div>
       </div>
       {!gamesState.isFetching && Boolean(state.list && Object.keys(state.list).length) && (

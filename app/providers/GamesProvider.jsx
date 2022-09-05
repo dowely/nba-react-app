@@ -13,7 +13,8 @@ function GamesProvider(props) {
   const initialState = {
     params: null,
     games: null,
-    isFetching: false
+    isFetching: false,
+    error: null
   }
 
   function reducer(draft, action) {
@@ -21,22 +22,40 @@ function GamesProvider(props) {
       case "fetchGames":
         draft.params = action.params
         draft.isFetching = true
+        draft.error = null
         break
 
       case "updateGames":
         draft.games = action.games
         draft.isFetching = false
         break
+
+      case "error":
+        draft.isFetching = false
+        draft.error = action.err
+        break
     }
   }
 
   const [state, dispatch] = useImmerReducer(reducer, initialState)
 
-  const games = useGames(state.params, appDispatch)
+  const games = useGames(state.params, dispatch)
 
   useEffect(() => {
     if (games) dispatch({ type: "updateGames", games })
   }, [games])
+
+  useEffect(() => {
+    if (state.error) {
+      appDispatch({
+        type: "flashMessage",
+        msg: {
+          text: state.error,
+          color: "danger"
+        }
+      })
+    }
+  }, [state.error])
 
   return (
     <GamesState.Provider value={state}>

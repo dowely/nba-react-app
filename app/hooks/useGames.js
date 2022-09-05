@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Axios from "axios"
 
-function useGames(params, appDispatch) {
+function useGames(params, dispatch) {
   const [games, setGames] = useState(null)
 
   const url = "https://www.balldontlie.io/api/v1/games"
@@ -14,6 +14,8 @@ function useGames(params, appDispatch) {
         const firstResponse = await Axios.get(url, { params })
 
         const meta = firstResponse.data.meta
+
+        if (meta.total_pages > 50) throw { response: { status: 50 } }
 
         results.push(...firstResponse.data.data)
 
@@ -38,16 +40,11 @@ function useGames(params, appDispatch) {
         console.error(error)
 
         const errors = {
-          429: "Too many requests. Try again later"
+          429: "Too many requests. Try again later",
+          50: "Too many results. Please narrow your search"
         }
 
-        appDispatch({
-          type: "flashMessage",
-          msg: {
-            text: errors[error.response.status],
-            color: "danger"
-          }
-        })
+        dispatch({ type: "error", err: errors[error.response.status] })
       }
     }
 
