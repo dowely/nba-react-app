@@ -3,7 +3,7 @@ import { GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { AppDispatch, AppState } from "../../providers/AppProvider.jsx"
 import { parseSearchParams } from "../../helpers.js"
 
-function GamesForm({ params, setParams }) {
+function GamesForm({ params, setParams, setRivalry }) {
   const appState = useContext(AppState)
   const appDispatch = useContext(AppDispatch)
 
@@ -32,14 +32,24 @@ function GamesForm({ params, setParams }) {
 
   useEffect(() => {
     if (Object.keys(query).length > 0) {
-      console.log(query)
+      const fetchParams = structuredClone(query)
+
+      if (fetchParams["team_ids[]"]) {
+        fetchParams["team_ids[]"].splice(1)
+      }
+
+      fetchParams["per_page"] = 100
+
       gamesDispatch({
         type: "fetchGames",
-        params: {
-          ...query,
-          per_page: 100
-        }
+        params: fetchParams
       })
+
+      if (teams[0] !== "all" && teams[1] !== "all") {
+        setRivalry([teams[0], teams[1]])
+      } else {
+        setRivalry(false)
+      }
     }
   }, [query])
 

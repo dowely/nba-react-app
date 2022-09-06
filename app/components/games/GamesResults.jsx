@@ -3,10 +3,11 @@ import { useImmerReducer } from "use-immer"
 import { GamesState } from "../../providers/GamesProvider.jsx"
 import { parseSearchParams } from "../../helpers.js"
 
+import GamesRivalry from "./GamesRivalry.jsx"
 import GamesList from "./GamesList.jsx"
 import GamesNav from "./GamesNav.jsx"
 
-function GamesResults({ params, setParams }) {
+function GamesResults({ params, setParams, rivalry }) {
   const gamesState = useContext(GamesState)
 
   const noParams = !Boolean(Array.from(params.keys()).length)
@@ -79,7 +80,14 @@ function GamesResults({ params, setParams }) {
     if (gamesState.games) {
       dispatch({
         type: "populateList",
-        games: gamesState.games
+        games: gamesState.games.filter(game => {
+          if (!rivalry) return true
+          else
+            return (
+              rivalry.includes(game.home_team.id.toString()) &&
+              rivalry.includes(game.visitor_team.id.toString())
+            )
+        })
       })
     }
   }, [gamesState.games])
@@ -172,6 +180,9 @@ function GamesResults({ params, setParams }) {
 
   return (
     <>
+      {rivalry &&
+        Boolean(state.list && Object.keys(state.list).length) &&
+        !gamesState.isFetching && <GamesRivalry list={state.list} rivalry={rivalry} />}
       <div className="card mt-5">
         <div className="card-body">
           <h2 className="card-title">Results</h2>
