@@ -1,18 +1,41 @@
-import React, { useState, useContext } from "react"
-import { useParams, Link } from "react-router-dom"
+import React, { useState, useEffect, useContext } from "react"
+import { useParams } from "react-router-dom"
 import { AppState } from "../../providers/AppProvider.jsx"
+import TeamProvider from "../../providers/TeamProvider.jsx"
 import Page from "../Page.jsx"
+import TeamHeader from "./TeamHeader.jsx"
 
 function TeamProfile() {
   const appState = useContext(AppState)
+
   const { id } = useParams()
 
-  const [team, setTeam] = useState(appState.teams.find(team => team.id == id))
+  const [team, setTeam] = useState()
+
+  useEffect(() => {
+    if (appState.teams.length > 1) {
+      setTeam(appState.teams.find(team => team.id == id))
+    }
+  }, [appState.teams, id])
 
   return (
-    <Page title={team && team.name}>
-      <h1>This is a {team && team.full_name} profile page.</h1>
-      <Link to="/teams/23">23</Link>
+    <Page title={team ? team.name : "Welcome!"}>
+      {!team && (
+        <div className="text-center mt-5">
+          <div
+            className="spinner-grow text-primary"
+            role="status"
+            style={{ width: "3rem", height: "3rem" }}
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+      {team && (
+        <TeamProvider team={team}>
+          <TeamHeader />
+        </TeamProvider>
+      )}
     </Page>
   )
 }

@@ -11,7 +11,7 @@ function Page(props) {
         behavior: "smooth"
       })
     )
-  }, [])
+  }, [props.title])
 
   return <Container>{props.children}</Container>
 }

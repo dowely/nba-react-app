@@ -1,8 +1,17 @@
 import React, { useContext } from "react"
 import { AppState } from "../../providers/AppProvider.jsx"
-import Games from "./Games.jsx"
 
 function GamesRivalry({ list, rivalry }) {
+  if (!rivalry || !list || !Object.keys(list).length) return
+
+  if (
+    !(
+      rivalry.find(id => parseInt(id) === Object.values(list)[0].games[0].home_team.id) &&
+      rivalry.find(id => parseInt(id) === Object.values(list)[0].games[0].visitor_team.id)
+    )
+  )
+    return
+
   const appState = useContext(AppState)
 
   const range = parseTimeRange(list)

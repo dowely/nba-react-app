@@ -180,9 +180,7 @@ function GamesResults({ params, setParams, rivalry }) {
 
   return (
     <>
-      {rivalry &&
-        Boolean(state.list && Object.keys(state.list).length) &&
-        !gamesState.isFetching && <GamesRivalry list={state.list} rivalry={rivalry} />}
+      {!gamesState.isFetching && <GamesRivalry list={state.list} rivalry={rivalry} />}
       <div className="card mt-5">
         <div className="card-body">
           <h2 className="card-title">Results</h2>
