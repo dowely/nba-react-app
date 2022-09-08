@@ -75,7 +75,9 @@ function GamesList({ list, params }) {
                     return (
                       <li key={game.id} className="list-group-item px-0 py-3 row d-flex">
                         <div className="col-3">
-                          {game.status.toUpperCase() === "FINAL" && <span>FINAL</span>}
+                          {(game.status.toUpperCase() === "FINAL" && <span>FINAL</span>) || (
+                            <span>{game.status}</span>
+                          )}
                         </div>
                         <div className="col-6 vstack gap-3">
                           <div className="row align-items-center">
