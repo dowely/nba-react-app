@@ -36,7 +36,7 @@ function TeamProvider({ children, team }) {
 
   const [state, dispatch] = useImmerReducer(reducer, initialState)
 
-  const standing = useStanding(useGames(state.request), team.id)
+  const standing = useStanding(useGames(state.request), team.id, state.request["seasons[]"][0])
 
   useEffect(() => {
     if (standing && Object.keys(standing).length > 0) {

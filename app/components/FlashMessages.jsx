@@ -5,7 +5,7 @@ function FlashMessages() {
   const appState = useContext(AppState)
 
   return (
-    <div className="floating-alerts d-flex w-100 position-fixed translate-middle-y">
+    <div className="floating-alerts d-flex w-100 px-4 position-fixed translate-middle-y">
       {appState.flashMessages.map((msg, index) => {
         return (
           <div

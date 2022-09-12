@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
 
-function useStanding(games, teamId) {
+function useStanding(games, teamId, season) {
   const [standing, setStanding] = useState(null)
 
   useEffect(() => {
     if (games && games.length > 0) {
       const standingData = {
+        season,
         winsLosses: [0, 0],
         pct: 0,
         home: [0, 0],
