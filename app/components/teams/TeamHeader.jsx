@@ -46,12 +46,12 @@ function TeamHeader() {
   }, [followed])
 
   return (
-    <div className="border-bottom border-2 border-secondary">
+    <header className="border-bottom border-2 border-secondary">
       <div className="container">
-        <div className="row py-4 gy-5">
-          <div className="">
+        <div className="row py-4 gy-4">
+          <div className="col-lg-7">
             <div className="row align-items-center">
-              <div className="col-4 px-0 text-center">
+              <div className="col-4 text-center">
                 <img
                   className="img-fluid"
                   src={teamState.team.logo}
@@ -93,75 +93,67 @@ function TeamHeader() {
               </div>
             </div>
           </div>
-          <div className="hstack text-center">
+          <div className="col-lg-5 hstack text-center">
             <div className="w-25 border-end">
               <h5>PPG</h5>
-              <p>
-                {standing && (
-                  <p className="fs-5">
-                    {Object.keys(standing).length ? standing.ppg : <hr className="w-50 mx-auto" />}
-                  </p>
-                )}
-                {!standing && (
-                  <p className="fs-5 placeholder-glow">
-                    <span className="placeholder col-7"></span>
-                  </p>
-                )}
-              </p>
+              {standing && (
+                <p className="fs-5 mb-0">
+                  {Object.keys(standing).length ? standing.ppg : <hr className="w-50 mx-auto" />}
+                </p>
+              )}
+              {!standing && (
+                <p className="fs-5 mb-0 placeholder-glow">
+                  <span className="placeholder col-7"></span>
+                </p>
+              )}
             </div>
             <div className="w-25 border-end">
               <h5>OPPG</h5>
-              <p>
-                {standing && (
-                  <p className="fs-5">
-                    {Object.keys(standing).length ? standing.oppg : <hr className="w-50 mx-auto" />}
-                  </p>
-                )}
-                {!standing && (
-                  <p className="fs-5 placeholder-glow">
-                    <span className="placeholder col-7"></span>
-                  </p>
-                )}
-              </p>
+              {standing && (
+                <p className="fs-5 mb-0">
+                  {Object.keys(standing).length ? standing.oppg : <hr className="w-50 mx-auto" />}
+                </p>
+              )}
+              {!standing && (
+                <p className="fs-5 mb-0 placeholder-glow">
+                  <span className="placeholder col-7"></span>
+                </p>
+              )}
             </div>
             <div className="w-25 border-end">
               <h5>L10</h5>
-              <p>
-                {standing && (
-                  <p className="fs-5">
-                    {Object.keys(standing).length ? (
-                      `${standing.l10[0]} - ${standing.l10[1]}`
-                    ) : (
-                      <hr className="w-50 mx-auto" />
-                    )}
-                  </p>
-                )}
-                {!standing && (
-                  <p className="fs-5 placeholder-glow">
-                    <span className="placeholder col-7"></span>
-                  </p>
-                )}
-              </p>
+              {standing && (
+                <p className="fs-5 mb-0">
+                  {Object.keys(standing).length ? (
+                    `${standing.l10[0]} - ${standing.l10[1]}`
+                  ) : (
+                    <hr className="w-50 mx-auto" />
+                  )}
+                </p>
+              )}
+              {!standing && (
+                <p className="fs-5 mb-0 placeholder-glow">
+                  <span className="placeholder col-7"></span>
+                </p>
+              )}
             </div>
             <div className="w-25">
               <h5>STRK</h5>
-              <p>
-                {standing && (
-                  <p className="fs-5">
-                    {Object.keys(standing).length ? standing.strk : <hr className="w-50 mx-auto" />}
-                  </p>
-                )}
-                {!standing && (
-                  <p className="fs-5 placeholder-glow">
-                    <span className="placeholder col-7"></span>
-                  </p>
-                )}
-              </p>
+              {standing && (
+                <p className="fs-5 mb-0">
+                  {Object.keys(standing).length ? standing.strk : <hr className="w-50 mx-auto" />}
+                </p>
+              )}
+              {!standing && (
+                <p className="fs-5 mb-0 placeholder-glow">
+                  <span className="placeholder col-7"></span>
+                </p>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }
 

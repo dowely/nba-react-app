@@ -11,7 +11,7 @@ function FlashMessages() {
           <div
             key={index}
             className={`floating-alert alert alert-${msg.color} mx-auto mb-0 text-center`}
-            style={{ minWidth: "35vw" }}
+            style={{ minWidth: "40vw" }}
           >
             {msg.text}
           </div>
