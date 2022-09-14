@@ -1,42 +1,50 @@
 import { useState, useEffect } from "react"
 
-function useStanding(games, teamId, season) {
-  const [standing, setStanding] = useState(null)
-
+function useStandings(games, teamIds) {
+  const [standings, setStandings] = useState(null)
+  console.log(teamIds)
   useEffect(() => {
-    if (games && games.length > 0) {
-      const standingData = {
-        season,
-        winsLosses: [0, 0],
-        pct: 0,
-        home: [0, 0],
-        away: [0, 0],
-        div: [0, 0],
-        conf: [0, 0],
-        east: [0, 0],
-        atlantic: [0, 0],
-        central: [0, 0],
-        southeast: [0, 0],
-        west: [0, 0],
-        northwest: [0, 0],
-        pacific: [0, 0],
-        southwest: [0, 0],
-        ppg: 0,
-        oppg: 0,
-        l10: [0, 0],
-        strk: ""
-      }
+    if (games && games.length > 0 && teamIds) {
+      const season = games[0].season
 
-      populateStanding(standingData)
+      const data = []
 
-      setStanding(standingData)
-    } else if (games) {
-      setStanding({})
+      teamIds.forEach(id => {
+        const standingData = {
+          id,
+          season,
+          winsLosses: [0, 0],
+          pct: 0,
+          home: [0, 0],
+          away: [0, 0],
+          div: [0, 0],
+          conf: [0, 0],
+          east: [0, 0],
+          atlantic: [0, 0],
+          central: [0, 0],
+          southeast: [0, 0],
+          west: [0, 0],
+          northwest: [0, 0],
+          pacific: [0, 0],
+          southwest: [0, 0],
+          ppg: 0,
+          oppg: 0,
+          l10: [0, 0],
+          strk: ""
+        }
+
+        populateStanding(standingData, id)
+
+        data.push(standingData)
+      })
+
+      setStandings(data)
     }
-  }, [games])
+  }, [games, teamIds])
 
-  function populateStanding(standing) {
+  function populateStanding(standing, teamId) {
     const regularSeasonGames = games
+      .filter(game => game.home_team.id === teamId || game.visitor_team.id === teamId)
       .filter(game => !game.postseason)
       .filter((game, index) => index < 82) // regular season
       .filter(game => game.status === "Final")
@@ -110,7 +118,7 @@ function useStanding(games, teamId, season) {
     }
   }
 
-  return standing
+  return standings
 }
 
-export default useStanding
+export default useStandings

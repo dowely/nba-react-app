@@ -1,18 +1,34 @@
 import React, { useState, useEffect, useContext } from "react"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
+import { StandingsState, StandingsDispatch } from "../../providers/StandingsProvider.jsx"
 import { TeamState } from "../../providers/TeamProvider.jsx"
 
-function TeamHeader() {
+function TeamHeader({ team }) {
   const appState = useContext(AppState)
   const appDispatch = useContext(AppDispatch)
+
+  const standingsState = useContext(StandingsState)
+  const standingsDispatch = useContext(StandingsDispatch)
 
   const teamState = useContext(TeamState)
 
   const [standing, setStanding] = useState()
+
   const [followed, setFollowed] = useState(
     (JSON.parse(appState.followedTeams) || []).includes(teamState.team.id)
   )
   const [toggled, setToggled] = useState(0)
+
+  useEffect(() => {
+    const teamRecord = standingsState.standings.find(record => record.teamId === team.id)
+
+    if (!teamRecord) {
+      standingsDispatch({ type: "createTeamRecords", ids: [team.id] })
+    } else if (teamRecord && teamRecord.seasons.length) {
+      if (teamRecord.seasons[0].season < new Date().getFullYear() - 1) setStanding({})
+      else setStanding(teamRecord.seasons[0])
+    }
+  }, [standingsState.standings])
 
   useEffect(() => {
     if (teamState.standings.length) {
