@@ -8,7 +8,6 @@ function useTeams() {
 
   useEffect(() => {
     ;(async function () {
-      console.log("fetching teams")
       try {
         const response = await Axios.get(url)
 

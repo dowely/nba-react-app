@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
 import { StandingsState, StandingsDispatch } from "../../providers/StandingsProvider.jsx"
-import { TeamState } from "../../providers/TeamProvider.jsx"
 
 function TeamHeader({ team }) {
   const appState = useContext(AppState)
@@ -10,12 +9,10 @@ function TeamHeader({ team }) {
   const standingsState = useContext(StandingsState)
   const standingsDispatch = useContext(StandingsDispatch)
 
-  const teamState = useContext(TeamState)
-
   const [standing, setStanding] = useState()
 
   const [followed, setFollowed] = useState(
-    (JSON.parse(appState.followedTeams) || []).includes(teamState.team.id)
+    (JSON.parse(appState.followedTeams) || []).includes(team.id)
   )
   const [toggled, setToggled] = useState(0)
 
@@ -31,20 +28,10 @@ function TeamHeader({ team }) {
   }, [standingsState.standings])
 
   useEffect(() => {
-    if (teamState.standings.length) {
-      if (teamState.standings[0].season < new Date().getFullYear() - 1) {
-        setStanding({})
-      } else {
-        setStanding(teamState.standings[0])
-      }
-    }
-  }, [teamState.standings])
-
-  useEffect(() => {
     const arr = JSON.parse(appState.followedTeams) || []
 
-    if (arr.includes(teamState.team.id) && !followed) setFollowed(true)
-    else if (!arr.includes(teamState.team.id) && followed) setFollowed(false)
+    if (arr.includes(team.id) && !followed) setFollowed(true)
+    else if (!arr.includes(team.id) && followed) setFollowed(false)
   }, [appState.followedTeams])
 
   useEffect(() => {
@@ -53,8 +40,8 @@ function TeamHeader({ team }) {
         type: "flashMessage",
         msg: {
           text: followed
-            ? `${teamState.team.full_name} games will now populate your feed`
-            : `${teamState.team.full_name} games will no longer be displayed in your feed`,
+            ? `${team.full_name} games will now populate your feed`
+            : `${team.full_name} games will no longer be displayed in your feed`,
           color: followed ? "success" : "danger"
         }
       })
@@ -68,15 +55,11 @@ function TeamHeader({ team }) {
           <div className="col-lg-7">
             <div className="row align-items-center">
               <div className="col-4 text-center">
-                <img
-                  className="img-fluid"
-                  src={teamState.team.logo}
-                  alt={`The ${teamState.team.name} logo`}
-                />
+                <img className="img-fluid" src={team.logo} alt={`The ${team.name} logo`} />
               </div>
               <div className="col-8">
                 <div className="row gy-3">
-                  <h1 className="col-12 mb-0">{teamState.team.full_name}</h1>
+                  <h1 className="col-12 mb-0">{team.full_name}</h1>
                   <div className="col-6 d-grid">
                     <button
                       type="button"
@@ -84,7 +67,7 @@ function TeamHeader({ team }) {
                       onClick={() => {
                         setToggled(prev => prev + 1)
 
-                        appDispatch({ type: "toggleFollow", teamId: teamState.team.id })
+                        appDispatch({ type: "toggleFollow", teamId: team.id })
                       }}
                     >
                       {followed ? "Unfollow" : "Follow"}

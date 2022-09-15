@@ -10,41 +10,47 @@ export const StandingsDispatch = createContext()
 function StandingsProvider({ children }) {
   const initialState = {
     standings: [],
-    seasonGames: null,
     request: null,
-    isFetching: false,
     error: null
   }
 
   function reducer(draft, action) {
     switch (action.type) {
       case "createTeamRecords":
-        const records = action.ids.map(id => ({
+        const newIds = action.ids.filter(
+          id => !draft.standings.some(record => record.teamId === id)
+        )
+
+        const records = newIds.map(id => ({
           teamId: id,
           seasons: []
         }))
 
         draft.standings.push(...records)
 
-        draft.request = {
-          per_page: 100,
-          "team_ids[]": action.ids,
-          "seasons[]": [new Date().getFullYear()]
+        if (!draft.request) {
+          draft.request = {
+            per_page: 100,
+            "team_ids[]": newIds,
+            "seasons[]": [new Date().getFullYear()]
+          }
+        } else {
+          draft.request["team_ids[]"].push(...newIds)
         }
-
-        draft.isFetching = true
         break
 
       case "noGamesYet":
         draft.request["seasons[]"] = [draft.request["seasons[]"][0] - 1]
         break
 
-      case "loadGames":
-        draft.seasonGames = action.games
+      case "insertStandings":
+        action.standings.forEach(standing => {
+          draft.standings.find(record => record.teamId === standing.id).seasons.push(standing)
+        })
+        draft.request = null
         break
 
       case "error":
-        draft.isFetching = false
         draft.error = action.error
         break
     }
@@ -55,14 +61,20 @@ function StandingsProvider({ children }) {
   const games = useGames(state.request, dispatch)
 
   useEffect(() => {
-    if (games && games.length) {
-      dispatch({ type: "loadGames", games })
-    } else if (games) {
+    if (games && !games.length) {
       dispatch({ type: "noGamesYet" })
     }
   }, [games])
 
-  const standing = useStandings(state.seasonGames, [12])
+  const standings = useStandings(games, state.request && state.request["team_ids[]"])
+
+  useEffect(() => {
+    if (standings) {
+      dispatch({ type: "insertStandings", standings })
+    }
+  }, [standings])
+
+  useEffect(() => console.log("Standings request: ", state.request), [state.request])
 
   return (
     <StandingsState.Provider value={state}>

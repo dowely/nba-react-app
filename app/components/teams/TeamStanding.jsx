@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react"
-import { TeamState } from "../../providers/TeamProvider.jsx"
 
-function TeamStanding() {
-  const teamState = useContext(TeamState)
-
-  const [standing, setStanding] = useState()
-
+function TeamStanding({ standingTeam }) {
   return (
     <tr>
-      <td>{teamState.team.full_name}</td>
+      <td className="ps-3">{standingTeam.full_name}</td>
+      <td>{standingTeam.standing.winsLosses[0]}</td>
+      <td>{standingTeam.standing.winsLosses[1]}</td>
+      <td>{standingTeam.standing.pct.toString().substring(1)}</td>
     </tr>
   )
 }

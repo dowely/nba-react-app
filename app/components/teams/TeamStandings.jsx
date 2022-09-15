@@ -1,48 +1,45 @@
 import React, { useState, useEffect, useContext } from "react"
-import useGames from "../../hooks/useGames"
-import { useImmerReducer } from "use-immer"
-import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
-import TeamProvider from "../../providers/TeamProvider.jsx"
+import { AppState } from "../../providers/AppProvider.jsx"
+import { StandingsState, StandingsDispatch } from "../../providers/StandingsProvider.jsx"
 import TeamStanding from "./TeamStanding.jsx"
 
 function TeamStandings({ team }) {
   const appState = useContext(AppState)
-  const appDispatch = useContext(AppDispatch)
 
-  const confTeams = appState.teams.filter(item => item.conference === team.conference)
+  const standingsState = useContext(StandingsState)
+  const standingsDispatch = useContext(StandingsDispatch)
 
-  const [gameRequest, setGameRequest] = useState({
-    per_page: 100,
-    "team_ids[]": confTeams.map(team => team.id),
-    "seasons[]": [new Date().getFullYear()]
-  })
+  const [standingTeams, setStandingTeams] = useState()
 
-  const games = useGames(gameRequest, appDispatch)
+  const [confTeams] = useState(appState.teams.filter(item => item.conference === team.conference))
 
   useEffect(() => {
-    if (games && !games.length)
-      setGameRequest(prev => ({
-        ...prev,
-        "seasons[]": [new Date().getFullYear() - 1]
-      }))
-  }, [games])
+    const missingRecords = []
 
-  const initialState = {
-    ordered: false,
-    orderedTeams: confTeams.map(item => ({ ...item, pct: undefined }))
-  }
+    confTeams.forEach(team => {
+      if (!standingsState.standings.find(record => record.teamId === team.id))
+        missingRecords.push(team.id)
+    })
 
-  function reducer(draft, action) {}
-
-  const [state, dispatch] = useImmerReducer(reducer, initialState)
-
-  useEffect(() => {}, [state.confTeams])
+    if (missingRecords.length) {
+      standingsDispatch({ type: "createTeamRecords", ids: missingRecords })
+    } else if (standingsState.standings.every(record => record.seasons.length)) {
+      setStandingTeams(
+        confTeams
+          .map(team => ({
+            ...team,
+            standing: standingsState.standings.find(record => record.teamId === team.id).seasons[0]
+          }))
+          .sort((a, b) => b.standing.pct - a.standing.pct)
+      )
+    }
+  }, [standingsState.standings])
 
   return (
     <div className="card">
       <h3 className="card-header">Standings</h3>
 
-      {!state.ordered && (
+      {!standingTeams && (
         <div className="text-center my-5">
           <div
             className="spinner-grow text-primary"
@@ -54,12 +51,12 @@ function TeamStandings({ team }) {
         </div>
       )}
 
-      {state.ordered && (
+      {standingTeams && (
         <>
           <div className="card-body">
             <div className="row">
-              <h4 className="col-7">foo</h4>
-              <div className="col-5">
+              <h4 className="col-6">foo</h4>
+              <div className="col-6">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -84,17 +81,17 @@ function TeamStandings({ team }) {
           <table className="table table-sm table-striped mb-0">
             <thead>
               <tr>
-                <th scope="col">Team</th>
+                <th scope="col" className="ps-3">
+                  Team
+                </th>
                 <th scope="col">W</th>
                 <th scope="col">L</th>
                 <th scope="col">PCT</th>
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              {state.orderedTeams.map((team, index) => (
-                <TeamProvider key={index} games={games} team={team}>
-                  <TeamStanding dispatch={dispatch} />
-                </TeamProvider>
+              {standingTeams.map((standingTeam, index) => (
+                <TeamStanding key={index} standingTeam={standingTeam} />
               ))}
             </tbody>
           </table>

@@ -2,9 +2,9 @@ import { useState, useEffect } from "react"
 
 function useStandings(games, teamIds) {
   const [standings, setStandings] = useState(null)
-  console.log(teamIds)
+
   useEffect(() => {
-    if (games && games.length > 0 && teamIds) {
+    if (games && games.length > 0) {
       const season = games[0].season
 
       const data = []
@@ -40,7 +40,7 @@ function useStandings(games, teamIds) {
 
       setStandings(data)
     }
-  }, [games, teamIds])
+  }, [games])
 
   function populateStanding(standing, teamId) {
     const regularSeasonGames = games
