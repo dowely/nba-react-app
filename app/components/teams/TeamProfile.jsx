@@ -7,6 +7,7 @@ import TeamHeader from "./TeamHeader.jsx"
 import TeamIntro from "./TeamIntro.jsx"
 import TeamSummary from "./TeamSummary.jsx"
 import TeamStandings from "./TeamStandings.jsx"
+import TeamHistory from "./TeamHistory.jsx"
 
 function TeamProfile() {
   const appState = useContext(AppState)
@@ -27,11 +28,12 @@ function TeamProfile() {
       <Page title={team.name}>
         <div className="row gy-4 gx-5 px-4 px-sm-0 py-4 py-lg-5">
           <main className="col-lg-6 col-xl-8">
-            <TeamIntro />
+            <TeamIntro team={team} />
           </main>
-          <aside className="col-lg-6 col-xl-4 vstack gap-4">
+          <aside className="col-lg-6 col-xl-4 vstack gap-5">
             <TeamSummary team={team} />
             <TeamStandings team={team} />
+            <TeamHistory team={team} />
           </aside>
         </div>
       </Page>

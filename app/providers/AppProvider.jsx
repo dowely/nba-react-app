@@ -1,6 +1,7 @@
 import React, { useEffect, createContext } from "react"
 import { useImmerReducer } from "use-immer"
 import useTeams from "../hooks/useTeams.js"
+import intros from "./intros.json"
 
 const logos = {}
 
@@ -25,7 +26,11 @@ function AppProvider(props) {
         division: "Pacific",
         full_name: "Los Angeles Lakers",
         name: "Lakers",
-        logo: "/logos/Lakers.gif"
+        logo: "/logos/Lakers.gif",
+        intro: {
+          text: "Lorem ipsum...",
+          url: "https://en.wikipedia.org/wiki/Los_Angeles_Lakers"
+        }
       }
     ],
     followedTeams: localStorage.getItem("followed_teams"),
@@ -36,7 +41,16 @@ function AppProvider(props) {
     switch (action.type) {
       case "loadTeams":
         draft.teams = action.teams.map(team => {
-          return { ...team, logo: logos[team.name] }
+          const introRecord = intros.find(record => record.id === team.id)
+
+          return {
+            ...team,
+            logo: logos[team.name],
+            intro: {
+              text: introRecord.intro,
+              url: introRecord.url
+            }
+          }
         })
         break
 

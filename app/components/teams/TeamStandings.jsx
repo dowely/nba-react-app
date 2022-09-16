@@ -11,6 +11,8 @@ function TeamStandings({ team }) {
 
   const [standingTeams, setStandingTeams] = useState()
 
+  const [listing, setListing] = useState("conference")
+
   const [confTeams] = useState(appState.teams.filter(item => item.conference === team.conference))
 
   useEffect(() => {
@@ -37,7 +39,18 @@ function TeamStandings({ team }) {
 
   return (
     <div className="card">
-      <h3 className="card-header">Standings</h3>
+      <div className="card-header d-flex justify-content-between">
+        <h3 className="mb-0">Standings</h3>
+        {standingTeams && (
+          <h3 className="mb-0">
+            {(() => {
+              const season = standingTeams[0].standing.season
+
+              return `${season} - ${(season + 1).toString().substring(2)}`
+            })()}
+          </h3>
+        )}
+      </div>
 
       {!standingTeams && (
         <div className="text-center my-5">
@@ -55,7 +68,7 @@ function TeamStandings({ team }) {
         <>
           <div className="card-body">
             <div className="row">
-              <h4 className="col-6">foo</h4>
+              <h4 className="col-6">{team[listing]}</h4>
               <div className="col-6">
                 <div className="form-check">
                   <input
@@ -63,14 +76,24 @@ function TeamStandings({ team }) {
                     type="radio"
                     name="divConf"
                     id="radioConf"
-                    defaultChecked
+                    value="conference"
+                    checked={listing === "conference"}
+                    onChange={e => setListing(e.target.value)}
                   />
                   <label className="form-check-label" htmlFor="radioConf">
                     Conference
                   </label>
                 </div>
                 <div className="form-check">
-                  <input className="form-check-input" type="radio" name="divConf" id="radioDiv" />
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="divConf"
+                    id="radioDiv"
+                    value="division"
+                    checked={listing === "division"}
+                    onChange={e => setListing(e.target.value)}
+                  />
                   <label className="form-check-label" htmlFor="radioDiv">
                     Division
                   </label>
@@ -84,15 +107,30 @@ function TeamStandings({ team }) {
                 <th scope="col" className="ps-3">
                   Team
                 </th>
-                <th scope="col">W</th>
-                <th scope="col">L</th>
-                <th scope="col">PCT</th>
+                <th scope="col" className="text-center">
+                  W
+                </th>
+                <th scope="col" className="text-center">
+                  L
+                </th>
+                <th scope="col" className="text-center">
+                  PCT
+                </th>
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              {standingTeams.map((standingTeam, index) => (
-                <TeamStanding key={index} standingTeam={standingTeam} />
-              ))}
+              {standingTeams
+                .filter(standingTeam =>
+                  listing === "conference" ? true : standingTeam.division === team.division
+                )
+                .map((standingTeam, index) => (
+                  <TeamStanding
+                    key={index}
+                    standingTeam={standingTeam}
+                    eighth={index === 7 ? true : false}
+                    highlighted={standingTeam.id === team.id ? true : false}
+                  />
+                ))}
             </tbody>
           </table>
         </>
