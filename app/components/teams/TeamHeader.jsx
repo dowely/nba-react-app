@@ -22,7 +22,7 @@ function TeamHeader({ team }) {
     if (!teamRecord) {
       standingsDispatch({ type: "createTeamRecords", ids: [team.id] })
     } else if (teamRecord && teamRecord.seasons.length) {
-      if (teamRecord.seasons[0].season < new Date().getFullYear() - 1) setStanding({})
+      if (teamRecord.seasons[0].season < new Date().getFullYear()) setStanding({})
       else setStanding(teamRecord.seasons[0])
     }
   }, [standingsState.standings])
@@ -97,7 +97,11 @@ function TeamHeader({ team }) {
               <h5>PPG</h5>
               {standing && (
                 <p className="fs-5 mb-0">
-                  {Object.keys(standing).length ? standing.ppg : <hr className="w-50 mx-auto" />}
+                  {Object.keys(standing).length ? (
+                    standing.ppg
+                  ) : (
+                    <span className="d-block w-50 mx-auto my-3 border-bottom border-1 border-secondary border-opacity-50" />
+                  )}
                 </p>
               )}
               {!standing && (
@@ -110,7 +114,11 @@ function TeamHeader({ team }) {
               <h5>OPPG</h5>
               {standing && (
                 <p className="fs-5 mb-0">
-                  {Object.keys(standing).length ? standing.oppg : <hr className="w-50 mx-auto" />}
+                  {Object.keys(standing).length ? (
+                    standing.oppg
+                  ) : (
+                    <span className="d-block w-50 mx-auto my-3 border-bottom border-1 border-secondary border-opacity-50" />
+                  )}
                 </p>
               )}
               {!standing && (
@@ -126,7 +134,7 @@ function TeamHeader({ team }) {
                   {Object.keys(standing).length ? (
                     `${standing.l10[0]} - ${standing.l10[1]}`
                   ) : (
-                    <hr className="w-50 mx-auto" />
+                    <span className="d-block w-50 mx-auto my-3 border-bottom border-1 border-secondary border-opacity-50" />
                   )}
                 </p>
               )}
@@ -140,7 +148,11 @@ function TeamHeader({ team }) {
               <h5>STRK</h5>
               {standing && (
                 <p className="fs-5 mb-0">
-                  {Object.keys(standing).length ? standing.strk : <hr className="w-50 mx-auto" />}
+                  {Object.keys(standing).length ? (
+                    standing.strk
+                  ) : (
+                    <span className="d-block w-50 mx-auto my-3 border-bottom border-1 border-secondary border-opacity-50" />
+                  )}
                 </p>
               )}
               {!standing && (
