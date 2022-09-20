@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
 import { BsSuitHeartFill, BsSuitHeart } from "react-icons/bs"
 
-function DivisionTeams({ division }) {
+function TeamDivision({ division }) {
   const appState = useContext(AppState)
   const appDispatch = useContext(AppDispatch)
 
@@ -76,4 +76,4 @@ function DivisionTeams({ division }) {
   )
 }
 
-export default DivisionTeams
+export default TeamDivision

@@ -13,7 +13,13 @@ function TeamStandings({ team }) {
 
   const [listing, setListing] = useState("conference")
 
-  const [confTeams] = useState(appState.teams.filter(item => item.conference === team.conference))
+  const [confTeams, setConfTeams] = useState(
+    appState.teams.filter(item => item.conference === team.conference)
+  )
+
+  useEffect(() => {
+    setConfTeams(appState.teams.filter(item => item.conference === team.conference))
+  }, [team])
 
   useEffect(() => {
     const missingRecords = []
@@ -35,7 +41,7 @@ function TeamStandings({ team }) {
           .sort((a, b) => b.standing.pct - a.standing.pct)
       )
     }
-  }, [standingsState.standings])
+  }, [standingsState.standings, confTeams])
 
   return (
     <div className="card">
