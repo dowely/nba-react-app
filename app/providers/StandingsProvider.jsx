@@ -1,13 +1,16 @@
-import React, { useEffect, createContext } from "react"
+import React, { useEffect, useContext, createContext } from "react"
 import { useImmerReducer } from "use-immer"
 import useGames from "../hooks/useGames"
 import useStandings from "../hooks/useStandings"
+import { AppDispatch } from "../providers/AppProvider.jsx"
 
 export const StandingsState = createContext()
 
 export const StandingsDispatch = createContext()
 
 function StandingsProvider({ children }) {
+  const appDispatch = useContext(AppDispatch)
+
   const initialState = {
     standings: [],
     request: null,
@@ -17,25 +20,17 @@ function StandingsProvider({ children }) {
   function reducer(draft, action) {
     switch (action.type) {
       case "createTeamRecords":
-        const newIds = action.ids.filter(
-          id => !draft.standings.some(record => record.teamId === id)
-        )
-
-        const records = newIds.map(id => ({
+        const records = action.ids.map(id => ({
           teamId: id,
           seasons: []
         }))
 
         draft.standings.push(...records)
 
-        if (!draft.request) {
-          draft.request = {
-            per_page: 100,
-            "team_ids[]": newIds,
-            "seasons[]": [new Date().getFullYear()]
-          }
-        } else {
-          draft.request["team_ids[]"].push(...newIds)
+        draft.request = {
+          per_page: 100,
+          "team_ids[]": action.ids,
+          "seasons[]": [new Date().getFullYear()]
         }
         break
 
@@ -83,7 +78,19 @@ function StandingsProvider({ children }) {
     }
   }, [standings])
 
-  useEffect(() => console.log("Standings request: ", state.request), [state.request])
+  useEffect(() => {
+    if (state.error) {
+      appDispatch({
+        type: "flashMessage",
+        msg: {
+          text: state.error,
+          color: "danger"
+        }
+      })
+    }
+  }, [state.error])
+
+  //useEffect(() => console.log("Standings request: ", state.request), [state.request])
 
   return (
     <StandingsState.Provider value={state}>

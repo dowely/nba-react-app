@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react"
-import { StandingsState, StandingsDispatch } from "../../providers/StandingsProvider.jsx"
+import { StandingsState } from "../../providers/StandingsProvider.jsx"
 
 function TeamStats({ team }) {
   const standingsState = useContext(StandingsState)
-  const standingsDispatch = useContext(StandingsDispatch)
 
   const [stats, setStats] = useState()
 
@@ -11,11 +10,11 @@ function TeamStats({ team }) {
     const teamRecord = standingsState.standings.find(record => record.teamId === team.id)
 
     if (!teamRecord) {
-      standingsDispatch({ type: "createTeamRecords", ids: [team.id] })
+      setStats(undefined)
     } else if (teamRecord && teamRecord.seasons.length) {
       setStats(formatStats(teamRecord.seasons[0]))
     }
-  }, [standingsState.standings])
+  }, [standingsState.standings, team])
 
   function formatStats(rawStanding) {
     return new Map([

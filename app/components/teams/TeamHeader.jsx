@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
-import { StandingsState, StandingsDispatch } from "../../providers/StandingsProvider.jsx"
+import { StandingsState } from "../../providers/StandingsProvider.jsx"
 
 function TeamHeader({ team }) {
   const appState = useContext(AppState)
   const appDispatch = useContext(AppDispatch)
 
   const standingsState = useContext(StandingsState)
-  const standingsDispatch = useContext(StandingsDispatch)
 
   const [standing, setStanding] = useState()
 
@@ -20,12 +19,12 @@ function TeamHeader({ team }) {
     const teamRecord = standingsState.standings.find(record => record.teamId === team.id)
 
     if (!teamRecord) {
-      standingsDispatch({ type: "createTeamRecords", ids: [team.id] })
+      setStanding(undefined)
     } else if (teamRecord && teamRecord.seasons.length) {
       if (teamRecord.seasons[0].season < new Date().getFullYear()) setStanding({})
       else setStanding(teamRecord.seasons[0])
     }
-  }, [standingsState.standings])
+  }, [standingsState.standings, team])
 
   useEffect(() => {
     const arr = JSON.parse(appState.followedTeams) || []

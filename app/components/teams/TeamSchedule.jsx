@@ -171,7 +171,7 @@ function TeamSchedule({ team }) {
             })()}
         </h3>
       </div>
-      {!games && (
+      {(!games || gamesState.isFetching) && (
         <div className="text-center my-5">
           <div
             className="spinner-grow text-primary"
@@ -182,7 +182,7 @@ function TeamSchedule({ team }) {
           </div>
         </div>
       )}
-      {games && generateList()}
+      {games && !gamesState.isFetching && generateList()}
     </div>
   )
 }

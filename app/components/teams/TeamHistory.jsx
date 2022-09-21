@@ -13,7 +13,7 @@ function TeamHistory({ team }) {
     const teamRecord = standingsState.standings.find(record => record.teamId === team.id)
 
     if (!teamRecord) {
-      standingsDispatch({ type: "createTeamRecords", ids: [team.id] })
+      setStandingYears(undefined)
     } else if (teamRecord && teamRecord.seasons.length) {
       setStandingYears([
         ...teamRecord.seasons.filter(
@@ -21,7 +21,7 @@ function TeamHistory({ team }) {
         )
       ])
     }
-  }, [standingsState.standings])
+  }, [standingsState.standings, team])
 
   useEffect(() => {
     if (standingYears && standingYears.length < historyCount) {

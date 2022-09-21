@@ -19,6 +19,8 @@ function TeamStandings({ team }) {
 
   useEffect(() => {
     setConfTeams(appState.teams.filter(item => item.conference === team.conference))
+
+    setStandingTeams(undefined)
   }, [team])
 
   useEffect(() => {
