@@ -41,7 +41,7 @@ function TeamDivision({ division }) {
       <h4 className="card-header bg-dark text-light">{division}</h4>
       <ul className="list-group list-group-flush">
         {teams.map((team, index) => (
-          <li key={index} className="list-group-item hstack gap-4">
+          <li key={index} className="list-group-item hstack ps-2 ps-sm-3 gap-3 gap-sm-4">
             <div className="col-2 align-self-stretch">
               <div className="d-inline-block align-middle h-100"></div>
               {team && (

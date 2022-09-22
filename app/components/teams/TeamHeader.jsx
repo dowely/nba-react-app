@@ -31,7 +31,11 @@ function TeamHeader({ team }) {
 
     if (arr.includes(team.id) && !followed) setFollowed(true)
     else if (!arr.includes(team.id) && followed) setFollowed(false)
-  }, [appState.followedTeams])
+  }, [appState.followedTeams, team])
+
+  useEffect(() => {
+    setToggled(0)
+  }, [team])
 
   useEffect(() => {
     if (toggled) {

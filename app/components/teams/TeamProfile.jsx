@@ -10,7 +10,7 @@ import TeamSummary from "./TeamSummary.jsx"
 import TeamStandings from "./TeamStandings.jsx"
 import TeamHistory from "./TeamHistory.jsx"
 import TeamStats from "./TeamStats.jsx"
-import GameCard from "../GameCard.jsx"
+import TeamFixtures from "./TeamFixtures.jsx"
 import TeamSchedule from "./TeamSchedule.jsx"
 
 function TeamProfile() {
@@ -30,7 +30,7 @@ function TeamProfile() {
     <StandingsProvider>
       <TeamHeader team={team} />
       <Page title={team.name}>
-        <div className="row gy-4 gx-5 px-4 px-sm-0 py-4 py-lg-5">
+        <div className="row gy-4 gx-lg-5 px-4 px-sm-0 pt-4 pt-lg-5">
           <article className="d-lg-none">
             <TeamIntro team={team} />
           </article>
@@ -44,18 +44,8 @@ function TeamProfile() {
             <article className="d-none d-lg-block">
               <TeamIntro team={team} />
             </article>
-            <h2 className="text-center mt-3 mt-lg-5">Fixtures & Results</h2>
             <GamesProvider>
-              <div className="row">
-                <div>
-                  <h3 className="text-center">Previous Game</h3>
-                  <GameCard filter="previous" />
-                </div>
-                <div>
-                  <h3 className="text-center">Next Game</h3>
-                  <GameCard filter="next" />
-                </div>
-              </div>
+              <TeamFixtures team={team} />
               <TeamSchedule team={team} />
             </GamesProvider>
           </main>

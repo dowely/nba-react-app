@@ -55,7 +55,7 @@ function StandingsProvider({ children }) {
         break
 
       case "error":
-        draft.error = action.error
+        draft.error = action.err
         break
     }
   }

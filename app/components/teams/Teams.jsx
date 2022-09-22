@@ -7,7 +7,7 @@ import TeamDivision from "./TeamDivision.jsx"
 function Teams() {
   return (
     <Page title="Teams">
-      <div className="row mt-3 mt-lg-5 gx-5">
+      <div className="row mt-3 mt-lg-5 gx-lg-5">
         <div className="col-lg-6">
           <h3 className="text-center text-lg-start">Western</h3>
           <hr className="mb-4" />
