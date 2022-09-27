@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { GamesState } from "../../providers/GamesProvider.jsx"
 import { parseSearchParams } from "../../helpers.js"
@@ -11,6 +11,8 @@ function GamesResults({ params, setParams, rivalry }) {
   const gamesState = useContext(GamesState)
 
   const noParams = !Boolean(Array.from(params.keys()).length)
+
+  const [spinner, setSpinner] = useState(false)
 
   const initialState = {
     list: null,
@@ -99,6 +101,8 @@ function GamesResults({ params, setParams, rivalry }) {
       if (state.pagination.totalPages > 0) {
         dispatch({ type: "updateNav", value: "middle" })
       }
+
+      setSpinner(false)
     }
   }, [state.list])
 
@@ -110,6 +114,14 @@ function GamesResults({ params, setParams, rivalry }) {
       })
     }
   }, [state.scrolledToBottom])
+
+  useEffect(() => {
+    if (gamesState.isFetching) setSpinner(true)
+  }, [gamesState.isFetching])
+
+  useEffect(() => {
+    if (gamesState.error) setSpinner(false)
+  }, [gamesState.error])
 
   function formatGames(rawGames, gamesPerPage) {
     if (!rawGames.length) return {}
@@ -180,22 +192,22 @@ function GamesResults({ params, setParams, rivalry }) {
 
   return (
     <>
-      {!gamesState.isFetching && <GamesRivalry list={state.list} rivalry={rivalry} />}
+      {!spinner && <GamesRivalry list={state.list} rivalry={rivalry} />}
       <div className="card mt-5">
         <div className="card-body">
           <h2 className="card-title">Results</h2>
           <p className="lead">Below are listed games for the applied filters</p>
           <hr />
-          {!state.list && !gamesState.isFetching && !gamesState.error && (
+          {!state.list && !spinner && !gamesState.error && (
             <div className="card-text">Submit the form to view the relevant games</div>
           )}
-          {gamesState.isFetching && (
+          {spinner && (
             <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           )}
           {gamesState.error && <p className="card-text">{gamesState.error}</p>}
-          {!gamesState.isFetching &&
+          {!spinner &&
             !gamesState.error &&
             state.list &&
             !Boolean(Object.keys(state.list).length) &&
@@ -204,14 +216,14 @@ function GamesResults({ params, setParams, rivalry }) {
                 There are no results for the selected parameters. Please modify your search
               </p>
             )}
-          {!gamesState.isFetching &&
+          {!spinner &&
             !gamesState.error &&
             Boolean(state.list && Object.keys(state.list).length) && (
               <GamesList list={state.list} params={params} />
             )}
         </div>
       </div>
-      {!gamesState.isFetching && Boolean(state.list && Object.keys(state.list).length) && (
+      {!spinner && Boolean(state.list && Object.keys(state.list).length) && (
         <GamesNav
           nav={state.nav}
           pagination={state.pagination}

@@ -12,8 +12,13 @@ function Standings() {
     <StandingsProvider>
       <Page title="Standings">
         <div className="card mt-4">
-          <StandingsFilters filter={filter} setFilter={setFilter} setSeason={setSeason} />
-          <StandingsTable filter={filter} season={season} />
+          <StandingsFilters
+            filter={filter}
+            setFilter={setFilter}
+            season={season}
+            setSeason={setSeason}
+          />
+          <StandingsTable filter={filter} season={season} setSeason={setSeason} />
         </div>
       </Page>
     </StandingsProvider>
