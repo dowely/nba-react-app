@@ -7,11 +7,19 @@ function useGames(params, dispatch) {
   const url = "https://www.balldontlie.io/api/v1/games"
 
   useEffect(() => {
+    let optParams = { ...params }
+
+    if (params && params["team_ids[]"] && params["team_ids[]"].length >= 15) {
+      const { "team_ids[]": unwanted, ...rest } = params
+
+      optParams = rest
+    }
+
     async function fetchGames() {
       let results = []
 
       try {
-        const firstResponse = await Axios.get(url, { params })
+        const firstResponse = await Axios.get(url, { params: optParams })
 
         const meta = firstResponse.data.meta
 
@@ -23,7 +31,7 @@ function useGames(params, dispatch) {
           const requests = []
 
           for (let page = meta.next_page; page <= meta.total_pages; page++) {
-            requests.push(Axios.get(url, { params: { ...params, page } }))
+            requests.push(Axios.get(url, { params: { ...optParams, page } }))
           }
 
           const responses = await Promise.all(requests)

@@ -16,7 +16,10 @@ function StandingsTable({ filter, season, setSeason }) {
 
   useEffect(() => {
     if (appState.teams.length === 30) {
-      standingsDispatch({ type: "createTeamRecords", ids: appState.teams.map(team => team.id) })
+      standingsDispatch({
+        type: "createTeamRecords",
+        ids: appState.teams.map(team => team.id)
+      })
     }
   }, [appState.teams])
 
@@ -35,9 +38,22 @@ function StandingsTable({ filter, season, setSeason }) {
   }, [standingsState.standings])
 
   useEffect(() => {
-    console.log(standingTeams)
     if (standingTeams && !season) setSeason(standingTeams[0].seasons[0].season)
   }, [standingTeams])
+
+  useEffect(() => {
+    if (season) {
+      setStandingTeams(prev =>
+        prev
+          .slice()
+          .sort(
+            (a, b) =>
+              b.seasons.find(standing => standing.season === season).pct -
+              a.seasons.find(standing => standing.season === season).pct
+          )
+      )
+    }
+  }, [season])
 
   function handleTabIndex() {
     if (tabIndex === 4) setTabIndex(1)
@@ -100,7 +116,7 @@ function StandingsTable({ filter, season, setSeason }) {
             ? "d-table-cell d-md-none"
             : tabIndex === 2 || tabIndex === 4
             ? "d-none d-md-table-cell"
-            : "d-none") + " text-center d-xl-table-cell px-1 px-md-3"
+            : "d-none") + " text-center d-xl-table-cell px-2 px-md-3"
       },
       {
         label: "Div",
@@ -173,13 +189,14 @@ function StandingsTable({ filter, season, setSeason }) {
                 />
               ))}
             {standingTeams &&
-              standingTeams.map((standingTeam, index) => (
+              standingTeams.map((standingTeam, index, arr) => (
                 <StandingsRow
                   key={index}
                   rowNo={index + 1}
                   standingTeam={standingTeam}
                   season={season}
                   tabIndex={tabIndex}
+                  topStanding={arr[0].seasons.find(standing => standing.season === season)}
                 />
               ))}
           </tbody>
