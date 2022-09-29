@@ -121,25 +121,3 @@ function StandingsFilters({ filter, setFilter, season, setSeason }) {
 }
 
 export default StandingsFilters
-
-/**
- * 
- * const divisions = appState.teams
-      .map(team => ({ div: team.division, conf: team.conference }))
-      .filter((item, index, arr) => index === arr.findIndex(instance => instance.div === item.div))
-      .filter(({ conf }, _, arr) =>
-        filter === "all" || conf === filter
-          ? true
-          : arr.find(({ div }) => div === filter)
-          ? conf === arr.find(({ div }) => div === filter).conf
-          : false
-      )
-
-      const allDivisionsVal = divisions
-      .filter(({ conf }) => conf === "West")
-      .find(({ div }) => div === filter)
-      ? "West"
-      : divisions.filter(({ conf }) => conf === "East").find(({ div }) => div === filter)
-      ? "East"
-      : "all"
- */
