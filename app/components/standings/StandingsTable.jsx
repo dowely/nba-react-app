@@ -29,10 +29,19 @@ function StandingsTable({ filter, season, setSeason }) {
       standingsState.standings.every(record => record.seasons.length > 0)
     ) {
       setStandingTeams(
-        appState.teams.map(team => ({
-          ...team,
-          seasons: standingsState.standings.find(record => record.teamId === team.id).seasons
-        }))
+        appState.teams
+          .map(team => ({
+            ...team,
+            seasons: standingsState.standings.find(record => record.teamId === team.id).seasons
+          }))
+          .sort((a, b) => {
+            if (!season) return 0
+            else
+              return (
+                b.seasons.find(standing => standing.season === season).pct -
+                a.seasons.find(standing => standing.season === season).pct
+              )
+          })
       )
     }
   }, [standingsState.standings])
@@ -42,7 +51,12 @@ function StandingsTable({ filter, season, setSeason }) {
   }, [standingTeams])
 
   useEffect(() => {
-    if (season) {
+    if (
+      season &&
+      standingTeams.every(standingTeam =>
+        standingTeam.seasons.find(standing => standing.season === season)
+      )
+    ) {
       setStandingTeams(prev =>
         prev
           .slice()
@@ -52,6 +66,12 @@ function StandingsTable({ filter, season, setSeason }) {
               a.seasons.find(standing => standing.season === season).pct
           )
       )
+    } else if (season) {
+      standingsDispatch({
+        type: "createSeasonRecords",
+        teamIds: appState.teams.map(team => team.id),
+        season
+      })
     }
   }, [season])
 
@@ -179,27 +199,46 @@ function StandingsTable({ filter, season, setSeason }) {
           {generateThead()}
           <tbody className="table-group-divider">
             {!standingTeams &&
-              appState.teams.map((team, index) => (
-                <StandingsRow
-                  key={index}
-                  rowNo={index + 1}
-                  standingTeam={team}
-                  season={season}
-                  tabIndex={tabIndex}
-                />
-              ))}
+              appState.teams
+                .filter(
+                  standingTeam =>
+                    filter === "all" ||
+                    standingTeam.conference === filter ||
+                    standingTeam.division === filter
+                )
+                .map((team, index) => (
+                  <StandingsRow
+                    key={index}
+                    rowNo={index + 1}
+                    standingTeam={team}
+                    season={season}
+                    tabIndex={tabIndex}
+                  />
+                ))}
             {standingTeams &&
-              standingTeams.map((standingTeam, index, arr) => (
-                <StandingsRow
-                  key={index}
-                  rowNo={index + 1}
-                  standingTeam={standingTeam}
-                  season={season}
-                  tabIndex={tabIndex}
-                  topStanding={arr[0].seasons.find(standing => standing.season === season)}
-                />
-              ))}
+              standingTeams
+                .filter(
+                  standingTeam =>
+                    filter === "all" ||
+                    standingTeam.conference === filter ||
+                    standingTeam.division === filter
+                )
+                .map((standingTeam, index, arr) => (
+                  <StandingsRow
+                    key={index}
+                    rowNo={index + 1}
+                    standingTeam={standingTeam}
+                    season={season}
+                    tabIndex={tabIndex}
+                    topStanding={arr[0].seasons.find(standing => standing.season === season)}
+                  />
+                ))}
           </tbody>
+          <caption className="pt-4 pb-0 small">
+            W - wins | L - losses | PCT - %wins | GB - winning games behind best team | Home - home
+            games W-L | Away - away games W-L | Div - division games W-L | Conf - confrence games
+            W-L
+          </caption>
         </table>
       )}
     </div>

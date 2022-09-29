@@ -43,6 +43,14 @@ function StandingsProvider({ children }) {
 
         break
 
+      case "createSeasonRecords":
+        draft.request = {
+          per_page: 100,
+          "team_ids[]": action.teamIds,
+          "seasons[]": [action.season]
+        }
+        break
+
       case "noGamesYet":
         draft.request["seasons[]"] = [draft.request["seasons[]"][0] - 1]
         break

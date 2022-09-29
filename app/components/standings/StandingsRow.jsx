@@ -1,4 +1,5 @@
-import React, { useEffect } from "react"
+import React from "react"
+import { Link } from "react-router-dom"
 
 function StandingsRow({ rowNo, standingTeam, season, tabIndex, topStanding }) {
   const tap = standingTeam.seasons && standingTeam.seasons.find(record => record.season === season)
@@ -90,8 +91,10 @@ function StandingsRow({ rowNo, standingTeam, season, tabIndex, topStanding }) {
             className="img-fluid img-thumbnail"
           />
         </div>
-        <span className="d-sm-none">{standingTeam.name}</span>
-        <span className="d-none d-sm-inline">{standingTeam.full_name}</span>
+        <Link className="anchor" to={`/teams/${standingTeam.id}`}>
+          <span className="d-sm-none">{standingTeam.name}</span>
+          <span className="d-none d-sm-inline">{standingTeam.full_name}</span>
+        </Link>
       </td>
       {columns.map(column => (
         <td key={column.label} className={column.className}>

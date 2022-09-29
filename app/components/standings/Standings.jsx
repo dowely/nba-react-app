@@ -5,7 +5,7 @@ import StandingsFilters from "./StandingsFilters.jsx"
 import StandingsTable from "./StandingsTable.jsx"
 
 function Standings() {
-  const [filter, setFilter] = useState()
+  const [filter, setFilter] = useState("all")
   const [season, setSeason] = useState()
 
   return (

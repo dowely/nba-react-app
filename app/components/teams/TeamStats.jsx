@@ -89,6 +89,12 @@ function TeamStats({ team }) {
             })}
         </ul>
       )}
+      <div className="card-footer bg-transparent">
+        <small className="text-muted">
+          PPG - Points Per Game | OPPG - Opponent Points Per Game | L10 - Last 10 games Wins -
+          Losses | STRK - Streak
+        </small>
+      </div>
     </div>
   )
 }
