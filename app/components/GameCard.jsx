@@ -7,16 +7,20 @@ function GameCard({ game }) {
 
   const followed = JSON.parse(appState.followedTeams) || []
 
-  const [teams, setTeams] = useState()
+  const [teams, setTeams] = useState(game && Object.keys(game).length && teamsArr())
 
   useEffect(() => {
     if (game && Object.keys(game).length) {
-      setTeams([
-        appState.teams.find(team => team.id === game.home_team.id),
-        appState.teams.find(team => team.id === game.visitor_team.id)
-      ])
+      setTeams(teamsArr())
     }
   }, [game])
+
+  function teamsArr() {
+    return [
+      appState.teams.find(team => team.id === game.home_team.id),
+      appState.teams.find(team => team.id === game.visitor_team.id)
+    ]
+  }
 
   function renderCard() {
     const days = ["Sunday", "Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday"]
@@ -44,7 +48,11 @@ function GameCard({ game }) {
     }
 
     if (teams.every(team => followed.find(id => id === team.id)))
-      tags.left.push(<span className="badge text-bg-danger d-table-cell m-1">Top Pick</span>)
+      tags.left.push(
+        <span key="topPick" className="badge text-bg-danger d-table-cell m-1">
+          Top Pick
+        </span>
+      )
 
     if (game.postseason)
       tags.right.push(
