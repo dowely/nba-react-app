@@ -37,35 +37,43 @@ function HomeFollow() {
           </div>
         </div>
       )}
-      {appState.teams.length === 30 && (
-        <ul className="list-group list-group-flush">
-          {appState.teams
-            .filter(({ id }) => teamIds.includes(id))
-            .map(team => (
-              <li key={team.id} className="list-group-item hstack gap-2">
-                <div className="col-3">
-                  <img
-                    src={team.logo}
-                    alt={`A ${team.full_name} team logo`}
-                    className="img-fluid"
-                  />
-                </div>
-                <h5 className="mb-0">
-                  <Link className="anchor" to={`/teams/${team.id}`}>
-                    {team.name}
-                  </Link>
-                </h5>
-                <div
-                  role="button"
-                  onClick={() => unFollow(team.id)}
-                  className="text-secondary fs-1 ms-auto"
-                >
-                  <FaTimesCircle />
-                </div>
-              </li>
-            ))}
-        </ul>
-      )}
+
+      {appState.teams.length === 30 &&
+        (teamIds ? (
+          <ul className="list-group list-group-flush">
+            {appState.teams
+              .filter(({ id }) => teamIds.includes(id))
+              .map(team => (
+                <li key={team.id} className="list-group-item hstack gap-2">
+                  <div className="col-3">
+                    <img
+                      src={team.logo}
+                      alt={`A ${team.full_name} team logo`}
+                      className="img-fluid"
+                    />
+                  </div>
+                  <h5 className="mb-0">
+                    <Link className="anchor" to={`/teams/${team.id}`}>
+                      {team.name}
+                    </Link>
+                  </h5>
+                  <div
+                    role="button"
+                    onClick={() => unFollow(team.id)}
+                    className="text-secondary fs-1 ms-auto"
+                  >
+                    <FaTimesCircle />
+                  </div>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <div className="card-body">
+            <p className="card-text">
+              You have not followed any team yet. Let's explore <Link to="/teams">them.</Link>
+            </p>
+          </div>
+        ))}
     </div>
   )
 }

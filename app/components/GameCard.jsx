@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AppState } from "../providers/AppProvider.jsx"
+import { AiOutlineEye } from "react-icons/ai"
 
 function GameCard({ game }) {
   const appState = useContext(AppState)
@@ -49,14 +50,30 @@ function GameCard({ game }) {
 
     if (teams.every(team => followed.find(id => id === team.id)))
       tags.left.push(
-        <span key="topPick" className="badge text-bg-danger d-table-cell m-1">
+        <span key="topPick" className="badge text-bg-danger d-table-cell m-1 pt-1">
           Top Pick
         </span>
       )
 
+    if (game.status.indexOf(":") > -1)
+      tags.left.push(
+        <div
+          key="watch"
+          role="button"
+          className="badge text-bg-primary fs-5 d-flex m-1"
+          style={{
+            width: "fit-content",
+            "--bs-badge-padding-x": "0.1em",
+            "--bs-badge-padding-y": "0.01em"
+          }}
+        >
+          <AiOutlineEye />
+        </div>
+      )
+
     if (game.postseason)
       tags.right.push(
-        <span key="postseason" className="badge text-bg-dark d-table-cell m-1">
+        <span key="postseason" className="badge text-bg-dark d-table-cell m-1 pt-1">
           Postseason
         </span>
       )
@@ -70,7 +87,7 @@ function GameCard({ game }) {
           game.visitor_team.division
         ])
       ).map(tag => (
-        <span key={tag} className="badge text-bg-dark d-table-cell m-1">
+        <span key={tag} className="badge text-bg-dark d-table-cell m-1 pt-1">
           {tag}
         </span>
       ))
@@ -95,15 +112,21 @@ function GameCard({ game }) {
             <h5
               className={
                 "col-2 px-0 mb-0 text-center col-xl-1 ord-2 fs-larger " +
-                (game.home_team_score < game.visitor_team_score ? "fw-light" : "")
+                (game.status.indexOf(":") > -1
+                  ? "fw-light text-muted"
+                  : game.home_team_score < game.visitor_team_score
+                  ? "fw-light"
+                  : "fw-bold")
               }
             >
               {game.home_team_score}
             </h5>
             <span className="col-3 text-center col-xl-2 ord-7 mx-xl-2">VS</span>
-            <div className="col-4 offset-5 px-0 text-center offset-xl-0 col-xl-auto ord-3 px-xl-2">
-              <span className="d-none d-xl-inline">:</span>
-              {/*9:00 PM ET or ':' or nothing*/}
+            <div className="col-5 offset-4 col-md-4 offset-md-5 col-lg-3 offset-lg-6 text-center offset-xl-0 col-xl-auto ord-3 px-sm-4 px-md-5 px-xl-2">
+              {game.status.indexOf(":") === -1 && <span className="d-none d-xl-inline">:</span>}
+              {game.status.indexOf(":") > -1 && (
+                <p className="border mb-0 px-xl-3">{game.status}</p>
+              )}
             </div>
             <div className="col-3 px-0 text-center col-xl-4 ord-5">
               <img src={teams[1].logo} alt={`A ${teams[1].name} logo`} className="img-fluid" />
@@ -116,7 +139,11 @@ function GameCard({ game }) {
             <h5
               className={
                 "col-2 px-0 mb-0 text-center col-xl-1 ord-4 fs-larger " +
-                (game.home_team_score > game.visitor_team_score ? "fw-light" : "")
+                (game.status.indexOf(":") > -1
+                  ? "fw-light text-muted"
+                  : game.home_team_score > game.visitor_team_score
+                  ? "fw-light"
+                  : "fw-bold")
               }
             >
               {game.visitor_team_score}

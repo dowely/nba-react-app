@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { AppState } from "../../providers/AppProvider.jsx"
 import { GamesState, GamesDispatch } from "../../providers/GamesProvider.jsx"
 import GameCard from "../GameCard.jsx"
@@ -15,16 +15,14 @@ function HomeList() {
     "seasons[]": [new Date().getFullYear()]
   })
 
-  const [games, setGames] = useState()
-
-  const list = useMemo(() => generateList(gamesState.games), [gamesState.games])
+  const [list, setList] = useState()
 
   const [filter, setFilter] = useState("past")
 
   useEffect(() => {
     if (appState.followedTeams) {
       setParams(prev => ({ ...prev, "team_ids[]": JSON.parse(appState.followedTeams) }))
-    } else setGames({})
+    } else setList({})
   }, [appState.followedTeams])
 
   useEffect(() => {
@@ -38,11 +36,6 @@ function HomeList() {
 
   useEffect(() => {
     if (gamesState.games && gamesState.games.length) {
-      const games = {
-        past: <p className="lead text-center">No games have been played yet</p>,
-        future: <p className="lead text-center">All games have been played already</p>
-      }
-
       const past = gamesState.games.filter(
         game => new Date(game.date).getTime() < new Date().getTime() || game.status === "Final"
       )
@@ -54,69 +47,11 @@ function HomeList() {
         .slice()
         .reverse()
 
-      if (past.length)
-        games.past = (
-          <div className="vstack gap-4">
-            {past.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        )
-
-      if (future.length)
-        games.future = (
-          <div className="vstack gap-4">
-            {future.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        )
-
-      setGames(games)
+      setList({ past, future })
     } else if (gamesState.games) {
       setParams(prev => ({ ...prev, "seasons[]": [new Date().getFullYear() - 1] }))
     }
   }, [gamesState.games])
-
-  function generateList(games) {
-    if (games && games.length) {
-      const list = {
-        past: <p className="lead text-center">No games have been played yet</p>,
-        future: <p className="lead text-center">All games have been played already</p>
-      }
-
-      const pastGames = games.filter(
-        game => new Date(game.date).getTime() < new Date().getTime() || game.status === "Final"
-      )
-
-      const futureGames = games
-        .filter(
-          game => new Date(game.date).getTime() >= new Date().getTime() && game.status !== "Final"
-        )
-        .slice()
-        .reverse()
-
-      if (pastGames.length)
-        list.past = (
-          <div className="vstack gap-4">
-            {pastGames.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        )
-
-      if (futureGames.length)
-        list.future = (
-          <div className="vstack gap-4">
-            {futureGames.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        )
-
-      return list
-    } else return
-  }
 
   return !list ? (
     <div className="text-center my-5">
@@ -132,7 +67,9 @@ function HomeList() {
     <p className="lead text-center">Choose teams you want to follow to populate your feed</p>
   ) : (
     <>
-      <p className="lead text-center">Season 2021/22</p>
+      <p className="lead text-center">
+        Season {`${params["seasons[]"][0]}-${(params["seasons[]"][0] + 1).toString().substring(2)}`}
+      </p>
       <div className="hstack gap-3 justify-content-center mb-3">
         <div className="form-check">
           <input
@@ -163,7 +100,28 @@ function HomeList() {
           </label>
         </div>
       </div>
-      {list[filter]}
+      {list.past.length ? (
+        <div className={"vstack gap-4 " + (filter === "future" ? "d-none" : "")}>
+          {list.past.map((game, i) => (
+            <GameCard key={i} game={game} />
+          ))}
+        </div>
+      ) : (
+        <p className={"lead text-center " + (filter === "future" ? "d-none" : "")}>
+          No games have been played yet
+        </p>
+      )}
+      {list.future.length ? (
+        <div className={"vstack gap-4 " + (filter === "past" ? "d-none" : "")}>
+          {list.future.map((game, i) => (
+            <GameCard key={i} game={game} />
+          ))}
+        </div>
+      ) : (
+        <p className={"lead text-center " + (filter === "past" ? "d-none" : "")}>
+          All games have been played already
+        </p>
+      )}
     </>
   )
 }

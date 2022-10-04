@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { GamesState, GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { AppState } from "../../providers/AppProvider.jsx"
+import { AiOutlineEye } from "react-icons/ai"
 
 function TeamSchedule({ team }) {
   const gamesState = useContext(GamesState)
@@ -130,9 +131,26 @@ function TeamSchedule({ team }) {
       )
     } else {
       status = (
-        <p className="col-6 col-xl-2 mb-0 px-0 text-center border border-secondary border-opacity-50">
-          {game.status}
-        </p>
+        <>
+          <div className="col-6 px-3 px-sm-5 px-xl-3 col-xl-3">
+            <p className="mb-0 text-center border border-secondary border-opacity-50">
+              {game.status}
+            </p>
+          </div>
+          <div className="col-3 col-xl-1 px-0">
+            <div
+              role="button"
+              className="badge text-bg-primary fs-3 d-flex"
+              style={{
+                width: "fit-content",
+                "--bs-badge-padding-x": "0.1em",
+                "--bs-badge-padding-y": "0.01em"
+              }}
+            >
+              <AiOutlineEye />
+            </div>
+          </div>
+        </>
       )
     }
 
