@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import useGames from "../hooks/useGames"
+import useGamesByIds from "../hooks/useGamesByIds"
 import { AppDispatch } from "./AppProvider.jsx"
 
 export const GamesState = createContext()
@@ -12,6 +13,7 @@ function GamesProvider(props) {
 
   const initialState = {
     params: null,
+    ids: null,
     games: null,
     isFetching: false,
     error: null
@@ -21,6 +23,12 @@ function GamesProvider(props) {
     switch (action.type) {
       case "fetchGames":
         draft.params = action.params
+        draft.isFetching = true
+        draft.error = null
+        break
+
+      case "fetchGamesByIds":
+        draft.ids = action.gamesIds
         draft.isFetching = true
         draft.error = null
         break
@@ -41,9 +49,15 @@ function GamesProvider(props) {
 
   const games = useGames(state.params, dispatch)
 
+  const gamesByIds = useGamesByIds(state.ids, dispatch)
+
   useEffect(() => {
     if (games) dispatch({ type: "updateGames", games })
   }, [games])
+
+  useEffect(() => {
+    if (gamesByIds) dispatch({ type: "updateGames", games: gamesByIds })
+  }, [gamesByIds])
 
   useEffect(() => {
     if (state.error) {

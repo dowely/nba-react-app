@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { GamesState, GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { AppState } from "../../providers/AppProvider.jsx"
-import { AiOutlineEye } from "react-icons/ai"
+import WatchBtn from "../WatchBtn.jsx"
 
 function TeamSchedule({ team }) {
   const gamesState = useContext(GamesState)
@@ -113,7 +113,7 @@ function TeamSchedule({ team }) {
 
     let status
 
-    if (game.status === "Final") {
+    if (game.status.indexOf(":") === -1) {
       const score = [game.home_team_score, game.visitor_team_score]
         .sort((a, b) => b - a)
         .join(" - ")
@@ -138,17 +138,15 @@ function TeamSchedule({ team }) {
             </p>
           </div>
           <div className="col-3 col-xl-1 px-0">
-            <div
-              role="button"
-              className="badge text-bg-primary fs-3 d-flex"
+            <WatchBtn
+              className="badge fs-3 d-flex"
               style={{
                 width: "fit-content",
                 "--bs-badge-padding-x": "0.1em",
                 "--bs-badge-padding-y": "0.01em"
               }}
-            >
-              <AiOutlineEye />
-            </div>
+              gameId={game.id}
+            />
           </div>
         </>
       )

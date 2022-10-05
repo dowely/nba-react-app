@@ -34,6 +34,7 @@ function AppProvider(props) {
       }
     ],
     followedTeams: localStorage.getItem("followed_teams"),
+    watchlist: localStorage.getItem("watchlist"),
     flashMessages: []
   }
 
@@ -57,6 +58,7 @@ function AppProvider(props) {
       case "toggleFollow":
         if (draft.followedTeams) {
           const arr = JSON.parse(draft.followedTeams)
+
           if (arr.includes(action.teamId) && arr.length === 1) {
             draft.followedTeams = null
           } else if (arr.includes(action.teamId)) {
@@ -69,6 +71,27 @@ function AppProvider(props) {
         } else {
           draft.followedTeams = `[${action.teamId}]`
         }
+        break
+
+      case "toggleGameWatch":
+        if (draft.watchlist) {
+          const arr = JSON.parse(draft.watchlist)
+
+          if (arr.includes(action.gameId) && arr.length === 1) {
+            draft.watchlist = null
+          } else if (arr.includes(action.gameId)) {
+            arr.splice(arr.indexOf(action.gameId), 1)
+
+            draft.watchlist = JSON.stringify(arr)
+          } else {
+            arr.push(action.gameId)
+
+            draft.watchlist = JSON.stringify(arr)
+          }
+        } else {
+          draft.watchlist = `[${action.gameId}]`
+        }
+
         break
 
       case "flashMessage":
@@ -92,6 +115,14 @@ function AppProvider(props) {
       localStorage.removeItem("followed_teams")
     }
   }, [state.followedTeams])
+
+  useEffect(() => {
+    if (state.watchlist) {
+      localStorage.setItem("watchlist", state.watchlist)
+    } else {
+      localStorage.removeItem("watchlist")
+    }
+  }, [state.watchlist])
 
   return (
     <AppState.Provider value={state}>

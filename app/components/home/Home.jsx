@@ -7,21 +7,23 @@ import HomeList from "./HomeList.jsx"
 
 function Home() {
   return (
-    <GamesProvider>
-      <Page title="Welcome!">
-        <div className="row gy-4 pt-4">
-          <aside className="vstack gap-4">
-            <HomeFollow />
+    <Page title="Welcome!">
+      <div className="row gy-4 pt-4">
+        <aside className="vstack gap-4">
+          <HomeFollow />
+          <GamesProvider>
             <HomeWatch />
-          </aside>
-          <main>
-            <h2 className="text-center mt-2">The games of teams you follow</h2>
-            <hr className="w-50 mx-auto my-3 my-xl-4" />
+          </GamesProvider>
+        </aside>
+        <main>
+          <h2 className="text-center mt-2">The games of teams you follow</h2>
+          <hr className="w-50 mx-auto my-3 my-xl-4" />
+          <GamesProvider>
             <HomeList />
-          </main>
-        </div>
-      </Page>
-    </GamesProvider>
+          </GamesProvider>
+        </main>
+      </div>
+    </Page>
   )
 }
 

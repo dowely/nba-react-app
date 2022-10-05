@@ -5,9 +5,9 @@ import Container from "./Container.jsx"
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand-lg bg-info">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <Container>
-        <Link to="/" className="navbar-brand fs-2 fw-semibold text-dark fst-italic">
+        <Link to="/" className="navbar-brand fs-2 fw-semibold fst-italic">
           <img src={NBALogo} height="64" alt="NBA Logo" className="me-3 p-1 bg-white rounded-3" />
           NBApp
         </Link>

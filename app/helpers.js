@@ -28,3 +28,29 @@ export function parseSearchParams(params) {
       return prevEntry
     }, {})
 }
+
+export function enhancedDate(date) {
+  date = new Date(date)
+
+  return {
+    weekDay: ["Sunday", "Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday"][
+      date.getDay()
+    ],
+    month: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ][date.getMonth()],
+    monthDay: date.getDate(),
+    year: date.getFullYear()
+  }
+}
