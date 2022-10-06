@@ -35,7 +35,11 @@ function AppProvider(props) {
     ],
     followedTeams: localStorage.getItem("followed_teams"),
     watchlist: localStorage.getItem("watchlist"),
-    flashMessages: []
+    flashMessages: [],
+    toast: {
+      isVisible: false,
+      data: null
+    }
   }
 
   function reducer(draft, action) {
@@ -92,6 +96,28 @@ function AppProvider(props) {
           draft.watchlist = `[${action.gameId}]`
         }
 
+        break
+
+      case "removeGameWatch":
+        const arr = JSON.parse(draft.watchlist)
+
+        if (arr.length === 1) draft.watchlist = null
+        else {
+          arr.splice(arr.indexOf(action.gameId), 1)
+
+          draft.watchlist = JSON.stringify(arr)
+        }
+        break
+
+      case "toggleToast":
+        if (draft.toast.isVisible && draft.toast.data.gameId === action.toastData.gameId) {
+          draft.toast.isVisible = false
+        } else if (draft.toast.isVisible) {
+          draft.toast.data = action.toastData
+        } else {
+          draft.toast.data = action.toastData
+          draft.toast.isVisible = true
+        }
         break
 
       case "flashMessage":

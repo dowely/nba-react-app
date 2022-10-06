@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AppState } from "../../providers/AppProvider.jsx"
 import { AiOutlineEye } from "react-icons/ai"
+import WatchBtn from "../WatchBtn.jsx"
 
 function GamesList({ list, params }) {
   const elementToScrollTo = useRef(null)
@@ -88,16 +89,14 @@ function GamesList({ list, params }) {
                           )}
                           <br />
                           {game.status.indexOf(":") > -1 && (
-                            <div
-                              role="button"
+                            <WatchBtn
                               className="mt-md-3 badge text-bg-primary fs-3 d-inline-flex align-items-center"
                               style={{
                                 "--bs-badge-padding-x": "0.1em",
                                 "--bs-badge-padding-y": "0.01em"
                               }}
-                            >
-                              <AiOutlineEye />
-                            </div>
+                              gameId={game.id}
+                            />
                           )}
                         </div>
                         <div className="col-8 col-md-6 vstack gap-3">
@@ -167,16 +166,15 @@ function GamesList({ list, params }) {
                           {game.status.indexOf(":") > -1 && (
                             <>
                               <span className="d-md-none border px-1">{game.status}</span>
-                              <div
-                                role="button"
+                              <WatchBtn
                                 className="d-md-none badge text-bg-primary fs-3 d-flex align-items-center"
                                 style={{
                                   "--bs-badge-padding-x": "0.1em",
                                   "--bs-badge-padding-y": "0.01em"
                                 }}
-                              >
-                                <AiOutlineEye />
-                              </div>
+                                gameId={game.id}
+                              />
+
                               <span className="d-none d-md-inline text-muted">
                                 {game.home_team_score}
                               </span>

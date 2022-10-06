@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AiOutlineEye } from "react-icons/ai"
+import { FaTimesCircle } from "react-icons/fa"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
 import { GamesState, GamesDispatch } from "../../providers/GamesProvider.jsx"
 import { enhancedDate } from "../../helpers"
@@ -16,7 +17,6 @@ function HomeWatch() {
 
   useEffect(() => {
     if (appState.watchlist) {
-      setList()
       gamesDispatch({ type: "fetchGamesByIds", gamesIds: JSON.parse(appState.watchlist) })
     } else {
       setList({})
@@ -24,29 +24,99 @@ function HomeWatch() {
   }, [appState.watchlist])
 
   useEffect(() => {
-    if (gamesState.games) {
+    if (gamesState.games && appState.teams.length === 30) {
       const list = {}
 
-      gamesState.games.forEach(game => {
-        const date = enhancedDate(game.date)
+      for (let game of gamesState.games) {
+        const date = enhancedDate(game.date.substring(0, game.date.indexOf(" ")))
+
+        if (game.status.indexOf(":") === -1) {
+          appDispatch({ type: "removeGameWatch", gameId: game.id })
+
+          continue
+        }
 
         const key = `${date.weekDay}, ${date.month} ${date.monthDay}, ${date.year}`
 
         if (key in list) list[key].push(game)
         else list[key] = [game]
-      })
+      }
 
       setList(list)
     }
-  }, [gamesState.games])
+  }, [gamesState.games, appState.teams])
 
   function generateList() {
     const listItems = []
 
     for (let key in list) {
-      listItems.push(<li className="list-group-item list-group-item-primary">{key}</li>)
+      listItems.push(
+        <li key={key} className="list-group-item list-group-item-primary">
+          {key}
+        </li>
+      )
 
-      listItems.push(...list[key].map(game => <li className="list-group-item">{game.id}</li>))
+      listItems.push(
+        ...list[key].map((game, i) => {
+          const homeTeam = appState.teams.find(team => team.id === game.home_team.id)
+
+          const visitorTeam = appState.teams.find(team => team.id === game.visitor_team.id)
+
+          return (
+            <li key={key + "-" + i} className="list-group-item d-flex align-items-center">
+              <div className="col-2">
+                <img
+                  src={homeTeam.logo}
+                  alt={`A ${homeTeam.full_name} team logo`}
+                  className="img-fluid"
+                />
+              </div>
+              <h6 className="col-2 mb-0 mt-1 text-center">{homeTeam.abbreviation}</h6>
+              <span className="col-auto">:</span>
+              <div className="col-2">
+                <img
+                  src={visitorTeam.logo}
+                  alt={`A ${visitorTeam.full_name} team logo`}
+                  className="img-fluid"
+                />
+              </div>
+              <h6 className="col-2 mb-0 mt-1 text-center">{visitorTeam.abbreviation}</h6>
+              <div className="btn-group btn-group-sm ms-auto" role="group">
+                <button
+                  type="button"
+                  className={
+                    "btn " +
+                    (appState.toast.isVisible && appState.toast.data.gameId === game.id
+                      ? "btn-info"
+                      : "btn-secondary")
+                  }
+                  onClick={() =>
+                    appDispatch({
+                      type: "toggleToast",
+                      toastData: {
+                        homeTeam,
+                        visitorTeam,
+                        gameId: game.id,
+                        gameDate: game.date,
+                        gameTime: game.status
+                      }
+                    })
+                  }
+                >
+                  Details
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary border border-light border-opacity-50 border-top-0 border-end-0 border-bottom-0"
+                  onClick={() => appDispatch({ type: "removeGameWatch", gameId: game.id })}
+                >
+                  <FaTimesCircle />
+                </button>
+              </div>
+            </li>
+          )
+        })
+      )
     }
 
     return <ul className="list-group list-group-flush">{listItems}</ul>
@@ -84,7 +154,7 @@ function HomeWatch() {
           </p>
         </div>
       )}
-      {list && Object.keys(list).length && generateList()}
+      {list && Boolean(Object.keys(list).length) && generateList()}
     </div>
   )
 }

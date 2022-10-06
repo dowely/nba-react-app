@@ -16,6 +16,7 @@ import AppProvider from "./providers/AppProvider.jsx"
 import Header from "./components/Header.jsx"
 import Footer from "./components/Footer.jsx"
 import FlashMessages from "./components/FlashMessages.jsx"
+import Toast from "./components/Toast.jsx"
 
 //pages
 import Home from "./components/home/Home.jsx"
@@ -25,8 +26,6 @@ import Teams from "./components/teams/Teams.jsx"
 import TeamProfile from "./components/teams/TeamProfile.jsx"
 import About from "./components/About.jsx"
 import Credits from "./components/Credits.jsx"
-
-//home components
 
 function Main() {
   return (
@@ -43,6 +42,7 @@ function Main() {
           <Route path="/about" element={<About />} />
           <Route path="/credits" element={<Credits />} />
         </Routes>
+        <Toast />
         <Footer />
       </BrowserRouter>
     </AppProvider>
