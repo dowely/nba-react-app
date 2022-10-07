@@ -50,11 +50,16 @@ function GameCard({ game }) {
     }
 
     if (teams.every(team => followed.find(id => id === team.id)))
-      tags.left.push(<span className="badge text-bg-danger d-table-cell m-1 pt-1">Top Pick</span>)
+      tags.left.push(
+        <span key="topPick" className="badge text-bg-danger d-table-cell m-1 pt-1">
+          Top Pick
+        </span>
+      )
 
     if (game.status.indexOf(":") > -1)
       tags.left.push(
         <WatchBtn
+          key="watchBtn"
           className="badge text-bg-primary fs-5 d-flex m-1"
           style={{
             width: "fit-content",

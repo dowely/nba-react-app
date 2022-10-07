@@ -120,6 +120,10 @@ function AppProvider(props) {
         }
         break
 
+      case "hideToast":
+        draft.toast.isVisible = false
+        break
+
       case "flashMessage":
         draft.flashMessages.push(action.msg)
         break

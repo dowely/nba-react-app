@@ -108,7 +108,10 @@ function HomeWatch() {
                 <button
                   type="button"
                   className="btn btn-secondary border border-light border-opacity-50 border-top-0 border-end-0 border-bottom-0"
-                  onClick={() => appDispatch({ type: "removeGameWatch", gameId: game.id })}
+                  onClick={() => {
+                    appDispatch({ type: "removeGameWatch", gameId: game.id })
+                    appDispatch({ type: "hideToast" })
+                  }}
                 >
                   <FaTimesCircle />
                 </button>

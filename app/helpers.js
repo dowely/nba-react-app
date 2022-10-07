@@ -54,3 +54,38 @@ export function enhancedDate(date) {
     year: date.getFullYear()
   }
 }
+
+export function timer(dateStr, timeStr) {
+  console.log(dateStr, timeStr)
+
+  const date = new Date(dateStr)
+
+  const gmtOffset = nthSunday(2, 2) <= date.getTime() && date.getTime() <= nthSunday(1, 10) ? 4 : 5
+
+  let hour = parseInt(timeStr.substring(0, timeStr.indexOf(":")))
+
+  if (timeStr.charAt(timeStr.indexOf(" ") + 1) === "P") hour += 12
+
+  const minutes = parseInt(timeStr.substring(timeStr.indexOf(":") + 1, timeStr.indexOf(":") + 3))
+
+  date.setHours(date.getHours() + hour)
+  date.setMinutes(date.getMinutes() + minutes)
+
+  date.setTime(date.getTime() + gmtOffset * 3600 * 1000)
+
+  console.log(date)
+
+  function nthSunday(nthIn, month) {
+    const switchDate = new Date(dateStr)
+
+    switchDate.setMonth(month)
+    switchDate.setDate(1)
+
+    for (let nth = 0; nth < nthIn; nth++) {
+      do switchDate.setDate(switchDate.getDate() + 1)
+      while (switchDate.getDay() !== 0)
+    }
+
+    return switchDate.getTime()
+  }
+}

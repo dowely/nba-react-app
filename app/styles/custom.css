@@ -27,10 +27,13 @@
   bottom: 0.75rem;
   left: 0.75rem;
   right: 0.75rem;
+  transform: translateY(100%);
+  transition: all 0.33s ease-out;
 }
 
 .toast-wrapper--is-visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 @media screen and (min-width: 401px) {

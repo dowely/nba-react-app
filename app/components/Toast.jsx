@@ -1,9 +1,11 @@
 import React, { useEffect, useContext } from "react"
 import { AiOutlineEye } from "react-icons/ai"
-import { AppState } from "../providers/AppProvider.jsx"
+import { AppState, AppDispatch } from "../providers/AppProvider.jsx"
+import { timer } from "../helpers"
 
 function Toast() {
   const appState = useContext(AppState)
+  const appDispatch = useContext(AppDispatch)
 
   return (
     <div
@@ -25,12 +27,19 @@ function Toast() {
             <AiOutlineEye />
           </span>
           <strong className="me-auto">Watchlist game</strong>
-          <small>11 mins ago</small>
-          <button type="button" className="btn-close"></button>
+          <small>
+            {appState.toast.data &&
+              timer(appState.toast.data.gameDate, appState.toast.data.gameTime)}
+          </small>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => appDispatch({ type: "hideToast" })}
+          ></button>
         </div>
         <div className="toast-body">
-          Hello, world! This is a toast message.
           {appState.toast.data && appState.toast.data.homeTeam.full_name}
+          <br /> *The game time is presented in your local time.
         </div>
       </div>
     </div>
