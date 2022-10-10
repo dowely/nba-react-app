@@ -34,6 +34,7 @@
 .toast-wrapper--is-visible {
   opacity: 1;
   transform: translateY(0);
+  z-index: 999;
 }
 
 @media screen and (min-width: 401px) {
@@ -112,10 +113,16 @@
     transform: scale(1);
   }
 
-  100% {
+  99.99% {
     opacity: 0;
     visibility: hidden;
     transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.2) translateY(0);
   }
 }
 

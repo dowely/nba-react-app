@@ -81,12 +81,17 @@ function AppProvider(props) {
         if (draft.watchlist) {
           const arr = JSON.parse(draft.watchlist)
 
-          if (arr.includes(action.gameId) && arr.length === 1) {
-            draft.watchlist = null
-          } else if (arr.includes(action.gameId)) {
-            arr.splice(arr.indexOf(action.gameId), 1)
+          if (arr.includes(action.gameId)) {
+            if (arr.length === 1) {
+              draft.watchlist = null
+            } else {
+              arr.splice(arr.indexOf(action.gameId), 1)
 
-            draft.watchlist = JSON.stringify(arr)
+              draft.watchlist = JSON.stringify(arr)
+            }
+
+            if (draft.toast.isVisible && draft.toast.data.gameId === action.gameId)
+              draft.toast.isVisible = false
           } else {
             arr.push(action.gameId)
 

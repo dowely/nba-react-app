@@ -44,7 +44,7 @@ function HomeFollow() {
             {appState.teams
               .filter(({ id }) => teamIds.includes(id))
               .map(team => (
-                <li key={team.id} className="list-group-item hstack gap-2">
+                <li key={team.id} className="list-group-item hstack gap-2 py-sm-3">
                   <div className="col-3">
                     <img
                       src={team.logo}
@@ -54,7 +54,8 @@ function HomeFollow() {
                   </div>
                   <h5 className="mb-0">
                     <Link className="anchor" to={`/teams/${team.id}`}>
-                      {team.name}
+                      <span className="d-sm-none">{team.name}</span>
+                      <span className="d-none d-sm-inline-block">{team.full_name}</span>
                     </Link>
                   </h5>
                   <div

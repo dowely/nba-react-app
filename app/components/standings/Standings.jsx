@@ -11,7 +11,7 @@ function Standings() {
   return (
     <StandingsProvider>
       <Page title="Standings">
-        <div className="card mt-4">
+        <div className="card mt-5">
           <StandingsFilters
             filter={filter}
             setFilter={setFilter}

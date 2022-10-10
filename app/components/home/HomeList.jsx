@@ -67,10 +67,10 @@ function HomeList() {
     <p className="lead text-center">Choose teams you want to follow to populate your feed</p>
   ) : (
     <>
-      <p className="lead text-center">
+      <p className="lead text-center mb-lg-4">
         Season {`${params["seasons[]"][0]}-${(params["seasons[]"][0] + 1).toString().substring(2)}`}
       </p>
-      <div className="hstack gap-3 justify-content-center mb-3">
+      <div className="hstack gap-3 justify-content-center mb-3 mb-lg-4">
         <div className="form-check">
           <input
             className="form-check-input"

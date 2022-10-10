@@ -63,7 +63,7 @@ function HomeWatch() {
           const visitorTeam = appState.teams.find(team => team.id === game.visitor_team.id)
 
           return (
-            <li key={key + "-" + i} className="list-group-item d-flex align-items-center">
+            <li key={key + "-" + i} className="list-group-item d-flex align-items-center py-md-3">
               <div className="col-2">
                 <img
                   src={homeTeam.logo}
@@ -71,7 +71,11 @@ function HomeWatch() {
                   className="img-fluid"
                 />
               </div>
-              <h6 className="col-2 mb-0 mt-1 text-center">{homeTeam.abbreviation}</h6>
+              <h6 className="col-2 mb-0 mt-1 text-center">
+                <Link className="anchor" to={`/teams/${homeTeam.id}`}>
+                  {homeTeam.abbreviation}
+                </Link>
+              </h6>
               <span className="col-auto">:</span>
               <div className="col-2">
                 <img
@@ -80,7 +84,11 @@ function HomeWatch() {
                   className="img-fluid"
                 />
               </div>
-              <h6 className="col-2 mb-0 mt-1 text-center">{visitorTeam.abbreviation}</h6>
+              <h6 className="col-2 mb-0 mt-1 text-center">
+                <Link className="anchor" to={`/teams/${visitorTeam.id}`}>
+                  {visitorTeam.abbreviation}
+                </Link>
+              </h6>
               <div className="btn-group btn-group-sm ms-auto" role="group">
                 <button
                   type="button"
@@ -109,8 +117,10 @@ function HomeWatch() {
                   type="button"
                   className="btn btn-secondary border border-light border-opacity-50 border-top-0 border-end-0 border-bottom-0"
                   onClick={() => {
+                    if (appState.toast.isVisible && appState.toast.data.gameId === game.id)
+                      appDispatch({ type: "hideToast" })
+
                     appDispatch({ type: "removeGameWatch", gameId: game.id })
-                    appDispatch({ type: "hideToast" })
                   }}
                 >
                   <FaTimesCircle />

@@ -103,7 +103,7 @@ function GameCard({ game }) {
             <div className="col-3 px-0 text-center col-xl-4 ord-1">
               <img src={teams[0].logo} alt={`A ${teams[0].name} logo`} className="img-fluid" />
             </div>
-            <h5 className="col-7 mb-0 col-xl-4 ord-6 text-xl-center px-xl-0 pe-xl-2">
+            <h5 className="col-7 mb-0 col-xl-4 ord-6 text-xl-center px-xl-0 ps-xl-2">
               <Link className="anchor" to={`/teams/${teams[0].id}`}>
                 {teams[0].full_name}
               </Link>
@@ -120,8 +120,8 @@ function GameCard({ game }) {
             >
               {game.home_team_score}
             </h5>
-            <span className="col-3 text-center col-xl-2 ord-7 mx-xl-2">VS</span>
-            <div className="col-5 offset-4 col-md-4 offset-md-5 col-lg-3 offset-lg-6 text-center offset-xl-0 col-xl-auto ord-3 px-sm-4 px-md-5 px-xl-2">
+            <span className="col-3 text-center col-xl-2 ord-7 mx-xl-auto">VS</span>
+            <div className="col-5 offset-4 col-md-4 offset-md-5 col-lg-5 offset-lg-4 text-center offset-xl-0 col-xl-2 ord-3 px-sm-5 px-lg-4 px-xl-2">
               {game.status.indexOf(":") === -1 && <span className="d-none d-xl-inline">:</span>}
               {game.status.indexOf(":") > -1 && (
                 <p className="border mb-0 px-xl-3">{game.status}</p>
@@ -130,7 +130,7 @@ function GameCard({ game }) {
             <div className="col-3 px-0 text-center col-xl-4 ord-5">
               <img src={teams[1].logo} alt={`A ${teams[1].name} logo`} className="img-fluid" />
             </div>
-            <h5 className="col-7 mb-0 col-xl-4 ord-8 text-xl-center px-xl-0 ps-xl-2">
+            <h5 className="col-7 mb-0 col-xl-4 ord-8 text-xl-center px-xl-0 pe-xl-2">
               <Link className="anchor" to={`/teams/${teams[1].id}`}>
                 {teams[1].full_name}
               </Link>
