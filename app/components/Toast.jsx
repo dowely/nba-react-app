@@ -93,7 +93,6 @@ function Toast() {
       >
         <div className="toast-header">
           <span
-            role="button"
             className="badge text-bg-primary fs-4 d-inline-flex align-items-center align-middle me-2"
             style={{
               "--bs-badge-padding-x": "0.1em",

@@ -153,9 +153,9 @@ function HomeWatch() {
         <div className="card-body">
           <p className="card-text">
             You have not added any game to your watchlist. Explore the{" "}
-            <Link to="/games">games</Link> and toggle the icon{" "}
+            <Link to="/games?start_date=2021-10-05&end_date=2022-03-14&page=1">games</Link> and
+            toggle the icon{" "}
             <span
-              role="button"
               className="badge text-bg-primary fs-3 d-inline-flex align-items-center align-middle"
               style={{
                 "--bs-badge-padding-x": "0.1em",

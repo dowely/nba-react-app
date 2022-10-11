@@ -48,6 +48,10 @@
   z-index: 999;
 }
 
+.floating-alerts--beneath {
+  z-index: -1;
+}
+
 .floating-alert {
   display: none;
   -moz-animation: floatingAlert ease-in 5s forwards;

@@ -101,7 +101,7 @@ function HomeList() {
         </div>
       </div>
       {list.past.length ? (
-        <div className={"vstack gap-4 " + (filter === "future" ? "d-none" : "")}>
+        <div className={"vstack gap-4 gap-md-5 " + (filter === "future" ? "d-none" : "")}>
           {list.past.map((game, i) => (
             <GameCard key={i} game={game} />
           ))}
@@ -112,7 +112,7 @@ function HomeList() {
         </p>
       )}
       {list.future.length ? (
-        <div className={"vstack gap-4 " + (filter === "past" ? "d-none" : "")}>
+        <div className={"vstack gap-4 gap-md-5 " + (filter === "past" ? "d-none" : "")}>
           {list.future.map((game, i) => (
             <GameCard key={i} game={game} />
           ))}

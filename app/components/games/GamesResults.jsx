@@ -198,7 +198,7 @@ function GamesResults({ params, setParams, rivalry }) {
           <h2 className="card-title">Results</h2>
           <p className="lead">Below are listed games for the applied filters</p>
           <hr />
-          {!state.list && !spinner && !gamesState.error && (
+          {((!state.list && !spinner && !gamesState.error) || noParams) && (
             <div className="card-text">Submit the form to view the relevant games</div>
           )}
           {spinner && (
@@ -223,7 +223,7 @@ function GamesResults({ params, setParams, rivalry }) {
             )}
         </div>
       </div>
-      {!spinner && Boolean(state.list && Object.keys(state.list).length) && (
+      {!spinner && Boolean(state.list && Object.keys(state.list).length) && !noParams && (
         <GamesNav
           nav={state.nav}
           pagination={state.pagination}
