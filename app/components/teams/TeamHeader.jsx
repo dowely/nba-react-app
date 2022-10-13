@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
+import ReactTooltip from "react-tooltip"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
 import { StandingsState } from "../../providers/StandingsProvider.jsx"
 
@@ -79,11 +80,19 @@ function TeamHeader({ team }) {
 
                   <div className="col-6 d-flex align-items-center">
                     {standing && (
-                      <p className="ms-2 mb-0 fs-3">
-                        {Object.keys(standing).length
-                          ? `${standing.winsLosses[0]} - ${standing.winsLosses[1]}`
-                          : `0 - 0`}
-                      </p>
+                      <>
+                        <p
+                          data-tip="Wins - Losses"
+                          data-for="WL"
+                          data-delay-show="400"
+                          className="ms-2 mb-0 fs-3 user-select-none"
+                        >
+                          {Object.keys(standing).length
+                            ? `${standing.winsLosses[0]} - ${standing.winsLosses[1]}`
+                            : `0 - 0`}
+                        </p>
+                        <ReactTooltip id="WL" />
+                      </>
                     )}
                     {!standing && (
                       <p className="ms-2 mb-1 fs-5 placeholder-glow flex-grow-1">
@@ -97,7 +106,15 @@ function TeamHeader({ team }) {
           </div>
           <div className="col-lg-5 hstack text-center">
             <div className="w-25 border-end">
-              <h5>PPG</h5>
+              <h5
+                data-tip="Points Per Game"
+                data-for="PPG"
+                data-delay-show="400"
+                className="user-select-none"
+              >
+                PPG
+              </h5>
+              <ReactTooltip id="PPG" />
               {standing && (
                 <p className="fs-5 mb-0">
                   {Object.keys(standing).length ? (
@@ -114,7 +131,16 @@ function TeamHeader({ team }) {
               )}
             </div>
             <div className="w-25 border-end">
-              <h5>OPPG</h5>
+              <h5
+                data-tip="Opponent Points<br/>Per Game"
+                data-for="OPPG"
+                data-delay-show="400"
+                data-multiline="true"
+                className="user-select-none"
+              >
+                OPPG
+              </h5>
+              <ReactTooltip id="OPPG" />
               {standing && (
                 <p className="fs-5 mb-0">
                   {Object.keys(standing).length ? (
@@ -131,7 +157,16 @@ function TeamHeader({ team }) {
               )}
             </div>
             <div className="w-25 border-end">
-              <h5>L10</h5>
+              <h5
+                data-tip="Last 10 games<br/>Wins - Losses"
+                data-for="L10"
+                data-multiline="true"
+                data-delay-show="400"
+                className="user-select-none"
+              >
+                L10
+              </h5>
+              <ReactTooltip id="L10" />
               {standing && (
                 <p className="fs-5 mb-0">
                   {Object.keys(standing).length ? (
@@ -148,7 +183,15 @@ function TeamHeader({ team }) {
               )}
             </div>
             <div className="w-25">
-              <h5>STRK</h5>
+              <h5
+                data-tip="Streak"
+                data-for="STRK"
+                data-delay-show="400"
+                className="user-select-none"
+              >
+                STRK
+              </h5>
+              <ReactTooltip id="STRK" />
               {standing && (
                 <p className="fs-5 mb-0">
                   {Object.keys(standing).length ? (

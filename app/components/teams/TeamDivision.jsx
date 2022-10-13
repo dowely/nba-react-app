@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { AppState, AppDispatch } from "../../providers/AppProvider.jsx"
 import { BsSuitHeartFill, BsSuitHeart } from "react-icons/bs"
+import ReactTooltip from "react-tooltip"
 
 function TeamDivision({ division }) {
   const appState = useContext(AppState)
@@ -62,13 +63,21 @@ function TeamDivision({ division }) {
               )}
               {!team && <span className="placeholder-wave placeholder col-12"></span>}
             </h5>
-            <div
-              role="button"
-              className="px-1 fs-3 text-danger"
-              onClick={() => toggleFollow(team.id)}
-            >
-              {team && (followed.includes(team.id) ? <BsSuitHeartFill /> : <BsSuitHeart />)}
-            </div>
+            {team && (
+              <div
+                data-tip=""
+                data-for={`${team.id}-heart`}
+                role="button"
+                className="px-1 fs-3 text-danger"
+                onClick={() => toggleFollow(team.id)}
+              >
+                {followed.includes(team.id) ? <BsSuitHeartFill /> : <BsSuitHeart />}
+                <ReactTooltip
+                  id={`${team.id}-heart`}
+                  getContent={() => (followed.includes(team.id) ? "unfollow" : "follow")}
+                />
+              </div>
+            )}
           </li>
         ))}
       </ul>
