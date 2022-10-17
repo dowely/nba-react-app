@@ -4,52 +4,48 @@ import Page from "./Page.jsx"
 function Credits() {
   return (
     <Page title="Credits">
-      <h1>Credits</h1>
-      <a href="https://www.sportslogos.net/">https://www.sportslogos.net/</a>
-      <p>
-        A wonderful serenity has taken possession of my entire soul, like these sweet mornings of
-        spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in
-        this spot, which was created for the bliss of souls like mine. I am so happy, my dear
-        friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my
-        talents. I should be incapable of drawing a single stroke at the present moment; and yet I
-        feel that I never was a greater artist than now. When, while the lovely valley teems with
-        vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage
-        of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down
-        among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand
-        unknown plants are noticed by me: when I hear the buzz of the little world among the stalks,
-        and grow familiar with the countless indescribable forms of the insects and flies, then I
-        feel the presence of the Almighty, who formed us in his own image, and the breath of that
-        universal love which bears and sustains us, as it floats around us in an eternity of bliss;
-        and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell
-        in my soul and absorb its power, like the form of a beloved mistress, then I often think
-        with longing, Oh, would I could describe these conceptions, could impress upon paper all
-        that is living so full and warm within me, that it might be the mirror of my soul, as my
-        soul is the mirror of the infinite God! O my friend -- but it is too much for my strength --
-        I sink under the weight of the splendour of these visions! A wonderful serenity has taken
-        possession of my entire soul, like these sweet mornings of spring which I enjoy with my
-        whole heart. I am alone, and feel the charm of existence in this spot, which was created for
-        the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
-        sense of mere tranquil existence, that I neglect my talents. I should be incapable of
-        drawing a single stroke at the present moment; and yet I feel that I never was a greater
-        artist than now. When, while the lovely valley teems with vapour around me, and the meridian
-        sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray
-        gleams steal into the inner sanctuary, I throw myself down among the tall grass by the
-        trickling stream; and, as I lie close to the earth, a thousand unknown plants are noticed by
-        me: when I hear the buzz of the little world among the stalks, and grow familiar with the
-        countless indescribable forms of the insects and flies, then I feel the presence of the
-        Almighty, who formed us in his own image, and the breath of that universal love which bears
-        and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when
-        darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its
-        power, like the form of a beloved mistress, then I often think with longing, Oh, would I
-        could describe these conceptions, could impress upon paper all that is living so full and
-        warm within me, that it might be the mirror of my soul, as my soul is the mirror of the
-        infinite God! O my friend -- but it is too much for my strength -- I sink under the weight
-        of the splendour of these visions!A wonderful serenity has taken possession of my entire
-        soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and
-        feel the charm of existence in this spot, which was created for the bliss of souls like
-        mine. I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil
-        existence,
-      </p>
+      <div className="col-lg-8 offset-lg-2">
+        <figure className="text-end mt-3 mt-md-4">
+          <blockquote className="blockquote">
+            <q>Alone we can do so little; together we can do so much.</q>
+          </blockquote>
+          <figcaption className="blockquote-footer">
+            <cite title="Helen Keller">Helen Keller</cite>
+          </figcaption>
+        </figure>
+
+        <p className="lead my-4">
+          This website wouldn't come about without some 3rd party assets. In particular the author
+          wants to give thanks to...
+        </p>
+
+        <div className="row gy-1 mb-3">
+          <div className="col-12">
+            <a href="http://www.balldontlie.io" target="_blank">
+              http://www.balldontlie.io
+            </a>
+          </div>
+          <div className="col-12">for NBA teams and games data</div>
+        </div>
+
+        <div className="row gy-1 mb-3">
+          <div className="col-12">
+            <a href="https://www.sportslogos.net" target="_blank">
+              https://www.sportslogos.net
+            </a>
+          </div>
+          <div className="col-12">for teams logo images</div>
+        </div>
+
+        <div className="row gy-1">
+          <div className="col-12">
+            <a href="https://www.wikipedia.org" target="_blank">
+              https://www.wikipedia.org/
+            </a>
+          </div>
+          <div className="col-12">for teams related information</div>
+        </div>
+      </div>
     </Page>
   )
 }
