@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "./styles/custom.css"
 
 import Axios from "axios"
@@ -41,7 +41,6 @@ function Main() {
           <Route path="/standings" element={<Standings />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamProfile />} />
-          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Toast />
         <Footer />
