@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom"
 import "./styles/custom.css"
 
 import Axios from "axios"
@@ -30,7 +30,7 @@ import Credits from "./components/Credits.jsx"
 function Main() {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Header />
         <FlashMessages />
         <Routes>
@@ -41,10 +41,11 @@ function Main() {
           <Route path="/standings" element={<Standings />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamProfile />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Toast />
         <Footer />
-      </BrowserRouter>
+      </HashRouter>
     </AppProvider>
   )
 }

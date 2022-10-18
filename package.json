@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/dowely/nba-react-app/issues"
   },
-  "homepage": "https://github.com/dowely/nba-react-app#readme",
+  "homepage": "https://dowely.github.io/nba-react-app",
   "dependencies": {
     "@babel/core": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
