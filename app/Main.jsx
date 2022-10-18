@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import "./styles/custom.css"
 
 import Axios from "axios"
@@ -35,12 +35,13 @@ function Main() {
         <FlashMessages />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/credits" element={<Credits />} />
           <Route path="/games" element={<Games />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:id" element={<TeamProfile />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/credits" element={<Credits />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Toast />
         <Footer />

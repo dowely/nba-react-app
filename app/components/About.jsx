@@ -13,13 +13,13 @@ function About() {
     <Page title="About">
       <div className="row g-4">
         <div className="col-12 col-md-6 pb-3">
-          <p className="text-danger mt-3">Hi, my name is</p>
+          <p className="text-danger mt-3 mt-lg-5">Hi, my name is</p>
           <h1 className="fw-bold text-dark">Marcin Ogar.</h1>
           <h2 className="text-muted mb-3">I make interactive web apps with code.</h2>
           <p className="lead">
             React (Javascript library) is one of my main interests. Take this website as an example;
             with React and Bootstrap as the visual building blocks and real data API under the hood.
-            It's a great tool to search through NBA games and view the statistics. You can also
+            It's a great tool for searching through NBA games and view the statistics. You can also
             personalize the app by selecting your favourite teams. This will help you keep track of
             their recent as well as up-coming games.
           </p>
