@@ -73,7 +73,6 @@ if (currentTask === "build") {
   config.mode = "production"
 
   config.output = {
-    publicPath: "/",
     path: path.resolve(__dirname, "docs"),
     filename: "[name].[chunkhash].js",
     chunkFilename: "[name].[chunkhash].js",
