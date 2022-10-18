@@ -30,7 +30,7 @@ function useStandings(games, teamIds) {
           ppg: 0,
           oppg: 0,
           l10: [0, 0],
-          strk: ""
+          strk: "-"
         }
 
         populateStanding(standingData, id)
@@ -104,7 +104,7 @@ function useStandings(games, teamIds) {
         strk.count++
       } else if ((strk.type === "L" && index) || (strk.type === "W" && !index)) {
         strk.count++
-      } else if (!standing.strk) {
+      } else if (standing.strk === "-") {
         standing.strk = strk.type + strk.count.toString()
       }
     }

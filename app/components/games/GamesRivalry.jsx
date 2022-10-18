@@ -59,10 +59,12 @@ function GamesRivalry({ list, rivalry }) {
 
   function countWins(teamOne, teamTwo) {
     for (const date in list) {
-      if (list[date].games[0].home_team_score > list[date].games[0].visitor_team_score) {
-        ;[teamOne, teamTwo].find(team => team.id === list[date].games[0].home_team.id).wins++
-      } else {
-        ;[teamOne, teamTwo].find(team => team.id === list[date].games[0].visitor_team.id).wins++
+      if (list[date].games[0].status === "Final") {
+        if (list[date].games[0].home_team_score > list[date].games[0].visitor_team_score) {
+          ;[teamOne, teamTwo].find(team => team.id === list[date].games[0].home_team.id).wins++
+        } else {
+          ;[teamOne, teamTwo].find(team => team.id === list[date].games[0].visitor_team.id).wins++
+        }
       }
     }
   }

@@ -27,7 +27,15 @@ function HomeWatch() {
     if (gamesState.games && appState.teams.length === 30) {
       const list = {}
 
-      for (let game of gamesState.games) {
+      const games = gamesState.games.slice().sort((a, b) => {
+        const isoStrA = a.date.replace(a.date.substring(a.date.indexOf(" ")), "T00:00:00.000Z")
+
+        const isoStrB = b.date.replace(b.date.substring(b.date.indexOf(" ")), "T00:00:00.000Z")
+
+        return new Date(isoStrA).getTime() - new Date(isoStrB).getTime()
+      })
+
+      for (let game of games) {
         const date = enhancedDate(game.date.substring(0, game.date.indexOf(" ")))
 
         if (game.status.indexOf(":") === -1) {
@@ -76,7 +84,7 @@ function HomeWatch() {
                   {homeTeam.abbreviation}
                 </Link>
               </h6>
-              <span className="col-auto">:</span>
+              <span className="col-auto px-1">:</span>
               <div className="col-2">
                 <img
                   src={visitorTeam.logo}
@@ -153,8 +161,7 @@ function HomeWatch() {
         <div className="card-body">
           <p className="card-text">
             You have not added any game to your watchlist. Explore the{" "}
-            <Link to="/games?start_date=2021-10-05&end_date=2022-03-14&page=1">games</Link> and
-            toggle the icon{" "}
+            <Link to="/games">games</Link> and toggle the icon{" "}
             <span
               className="badge text-bg-primary fs-3 d-inline-flex align-items-center align-middle"
               style={{

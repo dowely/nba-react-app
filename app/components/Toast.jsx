@@ -72,7 +72,7 @@ function Toast() {
         <span className="col-1 px-0">:</span>
         <span className="col-2 me-auto">{timeLeft.seconds.toString().padStart(2, "0")}</span>
 
-        <span className="col-2 ms-auto">days</span>
+        <span className="col-2 ms-auto">{"day" + (timeLeft.days > 1 ? "s" : "")}</span>
         <span className="col-1 px-0"></span>
         <span className="col-2">hrs</span>
         <span className="col-1 px-0"></span>

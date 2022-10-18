@@ -12,7 +12,9 @@ function TeamStanding({ standingTeam, eighth, highlighted }) {
       <td className="ps-3">{standingTeam.full_name}</td>
       <td className="text-center">{standingTeam.standing.winsLosses[0]}</td>
       <td className="text-center">{standingTeam.standing.winsLosses[1]}</td>
-      <td className="pe-2 text-center">{standingTeam.standing.pct.toString().substring(1)}</td>
+      <td className="pe-2 text-center">
+        {standingTeam.standing.pct > 0 ? standingTeam.standing.pct.toString().substring(1) : "-"}
+      </td>
     </tr>
   )
 }

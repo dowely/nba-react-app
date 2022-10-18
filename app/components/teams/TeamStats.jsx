@@ -27,7 +27,7 @@ function TeamStats({ team }) {
         })()
       ],
       ["Wins - Losses", rawStanding.winsLosses],
-      ["% Wins", rawStanding.pct.toString().substring(1)],
+      ["% Wins", rawStanding.pct > 0 ? rawStanding.pct.toString().substring(1) : "-"],
       ...[
         "Home",
         "Away",

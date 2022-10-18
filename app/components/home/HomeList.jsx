@@ -37,12 +37,15 @@ function HomeList() {
   useEffect(() => {
     if (gamesState.games && gamesState.games.length) {
       const past = gamesState.games.filter(
-        game => new Date(game.date).getTime() < new Date().getTime() || game.status === "Final"
+        game =>
+          new Date(game.date).getTime() + 8.64e7 < new Date().getTime() || game.status === "Final"
       )
 
       const future = gamesState.games
         .filter(
-          game => new Date(game.date).getTime() >= new Date().getTime() && game.status !== "Final"
+          game =>
+            new Date(game.date).getTime() + 8.64e7 >= new Date().getTime() &&
+            game.status !== "Final"
         )
         .slice()
         .reverse()

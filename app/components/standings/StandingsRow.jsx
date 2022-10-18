@@ -7,21 +7,21 @@ function StandingsRow({ rowNo, standingTeam, season, tabIndex, topStanding }) {
   const columns = [
     {
       label: "W",
-      data: tap && tap.winsLosses[0],
+      data: tap && tap.winsLosses[0].toString(),
       className:
         (tabIndex === 1 ? "d-table-cell" : tabIndex === 3 ? "d-md-table-cell d-none" : "d-none") +
         " text-center d-xl-table-cell ps-4 px-xl-3"
     },
     {
       label: "L",
-      data: tap && tap.winsLosses[1],
+      data: tap && tap.winsLosses[1].toString(),
       className:
         (tabIndex === 1 ? "d-table-cell" : tabIndex === 3 ? "d-md-table-cell d-none" : "d-none") +
         " text-center d-xl-table-cell px-3"
     },
     {
       label: "PCT",
-      data: tap && tap.pct.toString().substring(1),
+      data: tap && (tap.pct > 0 ? tap.pct.toString().substring(1) : "-"),
       className:
         (tabIndex === 2
           ? "d-table-cell d-md-none ps-4"

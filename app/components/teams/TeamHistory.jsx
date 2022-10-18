@@ -79,7 +79,9 @@ function TeamHistory({ team }) {
                   .substring(2)}`}</td>
                 <td className="text-center">{standingYear.winsLosses[0]}</td>
                 <td className="text-center">{standingYear.winsLosses[1]}</td>
-                <td className="pe-2 text-center">{standingYear.pct.toString().substring(1)}</td>
+                <td className="pe-2 text-center">
+                  {standingYear.pct > 0 ? standingYear.pct.toString().substring(1) : "-"}
+                </td>
               </tr>
             ))}
           </tbody>

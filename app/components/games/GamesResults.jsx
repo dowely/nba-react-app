@@ -168,7 +168,7 @@ function GamesResults({ params, setParams, rivalry }) {
     const timestamp = new Date().getTime()
 
     const upNext = Object.entries(state.list).reduce((prevValue, currValue) => {
-      if (new Date(currValue[0]).getTime() > timestamp) {
+      if (new Date(currValue[0]).getTime() + 8.64e7 > timestamp) {
         return currValue
       } else {
         return prevValue

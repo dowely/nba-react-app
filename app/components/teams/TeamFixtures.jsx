@@ -15,7 +15,10 @@ function TeamFixtures({ team }) {
 
       gamesState.games.forEach(game => {
         if (game.status === "Final" && !Object.keys(prev).length) prev = game
-        if (game.status !== "Final" && new Date(game.date).getTime() > new Date().getTime())
+        if (
+          game.status !== "Final" &&
+          new Date(game.date).getTime() + 8.64e7 > new Date().getTime()
+        )
           next = game
       })
 
