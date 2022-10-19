@@ -63,7 +63,7 @@ if (currentTask === "dev") {
     },
     hot: true,
     liveReload: false,
-    historyApiFallback: { index: "index.html" }
+    historyApiFallback: true
   }
 }
 

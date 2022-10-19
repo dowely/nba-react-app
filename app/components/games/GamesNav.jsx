@@ -26,7 +26,12 @@ function GamesNav({ nav, pagination, params, setParams, dispatch }) {
 
   return (
     <nav className="pt-2">
-      <ul className="pagination justify-content-center mt-4 mb-1">
+      <ul
+        className={
+          "pagination justify-content-center mt-4 mb-1 " +
+          (window.matchMedia("(max-width: 450px)").matches ? "pagination-sm" : "")
+        }
+      >
         <li
           role={nav.startsWith === 1 ? undefined : "button"}
           className={"page-item " + (nav.startsWith === 1 ? "disabled" : "")}
