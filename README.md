@@ -6,4 +6,4 @@ This website uses React and Bootstrap as the visual building blocks and real dat
 
 ---
 
-[Visit the App](https://dowely.github.io/nba-react-app/)
+[Visit the App](https://dowely-nba-react-app.netlify.app)
