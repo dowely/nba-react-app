@@ -13,7 +13,7 @@ function GamesList({ list, params }) {
     if (elementToScrollTo.current) {
       elementToScrollTo.current.scrollIntoView({ behavior: "smooth" })
     }
-  })
+  }, [list])
 
   return (
     <ul className="list-group list-group-flush">
