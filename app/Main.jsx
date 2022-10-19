@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import "./styles/custom.css"
 
 import Axios from "axios"
@@ -30,7 +30,7 @@ import Credits from "./components/Credits.jsx"
 function Main() {
   return (
     <AppProvider>
-      <HashRouter>
+      <BrowserRouter>
         <Header />
         <FlashMessages />
         <Routes>
@@ -45,7 +45,7 @@ function Main() {
         </Routes>
         <Toast />
         <Footer />
-      </HashRouter>
+      </BrowserRouter>
     </AppProvider>
   )
 }

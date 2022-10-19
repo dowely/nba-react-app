@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack",
-    "previewDocs": "node previewDocs"
+    "previewDist": "node previewDist"
   },
   "repository": {
     "type": "git",

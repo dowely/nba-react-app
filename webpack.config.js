@@ -6,9 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 class RunAfterCompile {
   apply(compiler) {
     compiler.hooks.done.tap("Copy styles", function () {
-      fse.copySync("./app/styles/custom.css", "./docs/custom.css")
-
-      fse.copySync("./docs/index.html", "./docs/404.html")
+      fse.copySync("./app/styles/custom.css", "./dist/custom.css")
     })
   }
 }
@@ -73,7 +71,8 @@ if (currentTask === "build") {
   config.mode = "production"
 
   config.output = {
-    path: path.resolve(__dirname, "docs"),
+    publicPath: "/",
+    path: path.resolve(__dirname, "dist"),
     filename: "[name].[chunkhash].js",
     chunkFilename: "[name].[chunkhash].js",
     assetModuleFilename: "logos/[name][ext]",
