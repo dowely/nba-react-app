@@ -45,7 +45,7 @@ function About() {
               <p className="card-text">
                 I'm a Poland-based web developer, engineer, who specializes in front-end
                 technologies. I took up computer programming in 2017 and a few years later became a
-                self-taught Javascript coder with a knack for CSS. Data manipulation and its
+                self-taught JavaScript coder with a knack for CSS. Data manipulation and its
                 presentation to the user is something I find particularly interesting.
               </p>
               <a href="https://github.com/dowely" className="btn btn-secondary" target="_blank">
