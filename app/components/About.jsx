@@ -44,9 +44,9 @@ function About() {
               <h5 className="card-title mb-3">Freelance Developer</h5>
               <p className="card-text">
                 I'm a Poland-based web developer, engineer, who specializes in front-end
-                technologies. I took up computer programming several years ago and have now become a
-                self-thaught Javascript coder with a knack for CSS. I also like woodworking and
-                volleyball.
+                technologies. I took up computer programming in 2017 and a few years later became a
+                self-taught Javascript coder with a knack for CSS. Data manipulation and its
+                presentation to the user is something I find particularly interesting.
               </p>
               <a href="https://github.com/dowely" className="btn btn-secondary" target="_blank">
                 <BsGithub size="1.5em" />
@@ -67,7 +67,7 @@ function About() {
         </div>
         <div className="col-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
           <p className="lead text-center my-2 my-lg-4">
-            Not sure yet? Check out my other projects to get a better insight into my skillset.
+            Not sure yet? Check out my other projects to get a better insight into my skill set.
           </p>
         </div>
         <div className="col-12 col-md-6 col-lg-5 ms-lg-auto me-lg-3">
