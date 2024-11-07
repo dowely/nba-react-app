@@ -42,7 +42,9 @@ config = {
       filename: "index.html",
       template: "app/index-template.html"
     }),
-    new Dotenv()
+    new Dotenv({
+      systemvars: true
+    })
   ],
   stats: "minimal"
 }
