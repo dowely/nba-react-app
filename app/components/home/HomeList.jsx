@@ -84,7 +84,7 @@ function HomeList() {
             checked={filter === "past"}
             onChange={e => setFilter(e.target.value)}
           />
-          <label className="form-check-label text-primary" htmlFor="played">
+          <label role="button" className="form-check-label text-primary" htmlFor="played">
             Played
           </label>
         </div>
@@ -98,7 +98,7 @@ function HomeList() {
             checked={filter === "future"}
             onChange={e => setFilter(e.target.value)}
           />
-          <label className="form-check-label text-primary" htmlFor="toBePlayed">
+          <label role="button" className="form-check-label text-primary" htmlFor="toBePlayed">
             To be played
           </label>
         </div>

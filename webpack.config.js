@@ -2,6 +2,7 @@ const currentTask = process.env.npm_lifecycle_event
 const path = require("path")
 const fse = require("fs-extra")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const Dotenv = require("dotenv-webpack")
 
 class RunAfterCompile {
   apply(compiler) {
@@ -40,8 +41,10 @@ config = {
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "app/index-template.html"
-    })
-  ]
+    }),
+    new Dotenv()
+  ],
+  stats: "minimal"
 }
 
 if (currentTask === "dev") {
@@ -59,7 +62,7 @@ if (currentTask === "dev") {
   config.devServer = {
     port: 3000,
     static: {
-      directory: path.join(__dirname, "app")
+      directory: path.join(__dirname, "app/styles")
     },
     hot: true,
     liveReload: false,

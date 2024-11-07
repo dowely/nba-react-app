@@ -130,7 +130,7 @@ function GamesResults({ params, setParams, rivalry }) {
     let count = 1
 
     for (const game of rawGames) {
-      const date = game.date.substring(0, game.date.indexOf("T"))
+      const date = game.date
 
       if (date in list) {
         list[date].games.push(game)

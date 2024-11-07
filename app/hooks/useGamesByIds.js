@@ -4,19 +4,21 @@ import Axios from "axios"
 function useGamesByIds(ids, dispatch) {
   const [gamesByIds, setGamesByIds] = useState(null)
 
-  const url = "https://www.balldontlie.io/api/v1/games"
+  const url = "https://api.balldontlie.io/v1/games"
 
   useEffect(() => {
     async function fetchGames() {
       let results = []
 
       try {
-        const requests = ids.map(id => Axios.get(url + `/${id}`))
+        const requests = ids.map(id =>
+          Axios.get(url + `/${id}`, { headers: { Authorization: process.env.APIKEY } })
+        )
 
         const responses = await Promise.all(requests)
 
         responses.forEach(response => {
-          results.push(response.data)
+          results.push(response.data.data)
         })
 
         results.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())

@@ -56,27 +56,24 @@ export function enhancedDate(date) {
 }
 
 export function dateGenerator(dateStr, timeStr) {
-  const isoStr = dateStr.replace(dateStr.substring(dateStr.indexOf(" ")), "T00:00:00.000Z")
-
-  const date = new Date(isoStr)
-
-  console.log(date)
+  const date = new Date(dateStr)
 
   const gmtOffset = nthSunday(2, 2) <= date.getTime() && date.getTime() <= nthSunday(1, 10) ? 4 : 5
 
-  let hour = parseInt(timeStr.substring(0, timeStr.indexOf(":")))
+  let hour = parseInt(timeStr.substring(timeStr.indexOf("T") + 1, timeStr.indexOf(":")))
 
   if (timeStr.charAt(timeStr.indexOf(" ") + 1) === "P") hour += 12
 
   const minutes = parseInt(timeStr.substring(timeStr.indexOf(":") + 1, timeStr.indexOf(":") + 3))
 
   date.setHours(date.getHours() + hour)
+
   date.setMinutes(date.getMinutes() + minutes)
 
   date.setTime(date.getTime() + gmtOffset * 3600 * 1000)
 
   function nthSunday(nthIn, month) {
-    const switchDate = new Date(isoStr)
+    const switchDate = new Date(dateStr)
 
     switchDate.setMonth(month)
     switchDate.setDate(1)

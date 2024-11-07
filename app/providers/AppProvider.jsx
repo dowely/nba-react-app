@@ -45,7 +45,7 @@ function AppProvider(props) {
   function reducer(draft, action) {
     switch (action.type) {
       case "loadTeams":
-        draft.teams = action.teams.map(team => {
+        draft.teams = action.teams.slice(0, 30).map(team => {
           const introRecord = intros.find(record => record.id === team.id)
 
           return {

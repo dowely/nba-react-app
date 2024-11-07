@@ -4,12 +4,12 @@ import Axios from "axios"
 function useTeams() {
   const [teams, setTeams] = useState(null)
 
-  const url = "https://www.balldontlie.io/api/v1/teams"
+  const url = "https://api.balldontlie.io/v1/teams"
 
   useEffect(() => {
     ;(async function () {
       try {
-        const response = await Axios.get(url)
+        const response = await Axios.get(url, { headers: { Authorization: process.env.APIKEY } })
 
         setTeams(response.data.data)
       } catch (error) {

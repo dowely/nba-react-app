@@ -26,17 +26,12 @@ function HomeWatch() {
   useEffect(() => {
     if (gamesState.games && appState.teams.length === 30) {
       const list = {}
-
       const games = gamesState.games.slice().sort((a, b) => {
-        const isoStrA = a.date.replace(a.date.substring(a.date.indexOf(" ")), "T00:00:00.000Z")
-
-        const isoStrB = b.date.replace(b.date.substring(b.date.indexOf(" ")), "T00:00:00.000Z")
-
-        return new Date(isoStrA).getTime() - new Date(isoStrB).getTime()
+        return new Date(a.date).getTime() - new Date(b.date).getTime()
       })
 
       for (let game of games) {
-        const date = enhancedDate(game.date.substring(0, game.date.indexOf(" ")))
+        const date = enhancedDate(game.date)
 
         if (game.status.indexOf(":") === -1) {
           appDispatch({ type: "removeGameWatch", gameId: game.id })

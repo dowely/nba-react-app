@@ -41,7 +41,7 @@ function About() {
           <div className="card text-bg-light border-secondary">
             <img src={mOgarPhoto} className="card-img-top" alt="A Marcin Ogar profile photo" />
             <div className="card-body">
-              <h5 className="card-title mb-3">Freelance Developer</h5>
+              <h5 className="card-title mb-3">Software Engineer</h5>
               <p className="card-text">
                 I'm a Poland-based web developer, engineer, who specializes in front-end
                 technologies. I took up computer programming in 2017 and a few years later became a

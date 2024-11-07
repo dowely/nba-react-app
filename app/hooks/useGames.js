@@ -4,7 +4,7 @@ import Axios from "axios"
 function useGames(params, dispatch) {
   const [games, setGames] = useState(null)
 
-  const url = "https://www.balldontlie.io/api/v1/games"
+  const url = "https://api.balldontlie.io/v1/games"
 
   useEffect(() => {
     let optParams = { ...params }
@@ -19,7 +19,10 @@ function useGames(params, dispatch) {
       let results = []
 
       try {
-        const firstResponse = await Axios.get(url, { params: optParams })
+        const firstResponse = await Axios.get(url, {
+          params: optParams,
+          headers: { Authorization: process.env.APIKEY }
+        })
 
         const meta = firstResponse.data.meta
 
@@ -31,7 +34,12 @@ function useGames(params, dispatch) {
           const requests = []
 
           for (let page = meta.next_page; page <= meta.total_pages; page++) {
-            requests.push(Axios.get(url, { params: { ...optParams, page } }))
+            requests.push(
+              Axios.get(url, {
+                params: { ...optParams, page },
+                headers: { Authorization: process.env.APIKEY }
+              })
+            )
           }
 
           const responses = await Promise.all(requests)
